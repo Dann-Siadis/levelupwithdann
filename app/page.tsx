@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 const SECTIONS = [
   { key: 'games',      label: 'Game Reviews',  href: '/reviews' },
-  { key: 'tvshows',    label: 'TV Shows',       href: '/tvshows' },
+  { key: 'tvshows',    label: 'TV Show Reviews', href: '/tvshows' },
   { key: 'gear',       label: 'Gear',           href: '/gear' },
   { key: 'gaming',     label: 'Gaming Blogs',   href: '/blogs' },
   { key: 'kickboxing', label: 'Kickboxing',     href: '/kickboxing' },
