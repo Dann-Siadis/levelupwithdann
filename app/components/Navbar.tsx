@@ -26,10 +26,10 @@ export default function Navbar() {
           aria-label="Menu"
         >
           <Image
-            src="/logo.png"
+            src="/lwdlogo.png"
             alt="LevelUpWithDann"
-            width={100}
-            height={75}
+            width={72}
+            height={54}
             className="object-contain"
             priority
           />
