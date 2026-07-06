@@ -6,6 +6,7 @@ interface ReviewCardProps {
   href: string
   imageUrl?: string
   rating?: number // 1–5
+  className?: string
 }
 
 function Stars({ rating }: { rating: number }) {
@@ -25,11 +26,11 @@ function Stars({ rating }: { rating: number }) {
   )
 }
 
-export default function ReviewCard({ title, href, imageUrl, rating }: ReviewCardProps) {
+export default function ReviewCard({ title, href, imageUrl, rating, className }: ReviewCardProps) {
   return (
     <Link
       href={href}
-      className="group shrink-0 w-48 rounded-2xl overflow-hidden flex flex-col"
+      className={`group rounded-2xl overflow-hidden flex flex-col ${className ?? 'shrink-0 w-48'}`}
       style={{
         background: 'rgba(255,255,255,0.05)',
         backdropFilter: 'blur(12px)',

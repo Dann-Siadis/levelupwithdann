@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { client, urlFor } from '@/lib/sanity'
 import ReviewCard from './components/ReviewCard'
+import SeeAllCard from './components/SeeAllCard'
 import SwipeCarousel from './components/SwipeCarousel'
 import type { Metadata } from 'next'
 
@@ -14,40 +15,49 @@ export const metadata: Metadata = {
 }
 
 const SECTIONS = [
-  { key: 'games',      label: 'Game Reviews',   icon: '🎮', href: '/reviews' },
-  { key: 'tvshows',    label: 'TV Shows',        icon: '📺', href: '/tvshows' },
-  { key: 'gear',       label: 'Gear',            icon: '🎧', href: '/gear' },
-  { key: 'gaming',     label: 'Gaming Blogs',    icon: '🕹️', href: '/blogs' },
-  { key: 'kickboxing', label: 'Kickboxing',      icon: '🥊', href: '/kickboxing' },
+  { key: 'games',      label: 'Game Reviews',  icon: '🎮', href: '/reviews' },
+  { key: 'tvshows',    label: 'TV Shows',       icon: '📺', href: '/tvshows' },
+  { key: 'gear',       label: 'Gear',           icon: '🎧', href: '/gear' },
+  { key: 'gaming',     label: 'Gaming Blogs',   icon: '🕹️', href: '/blogs' },
+  { key: 'kickboxing', label: 'Kickboxing',     icon: '🥊', href: '/kickboxing' },
 ]
 
 export default async function Home() {
   const [hero, posts, products] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
-      "imageUrl": image.asset->url,
-      ctaText,
-      ctaLink
+      "imageUrl": image.asset->url, ctaText, ctaLink
     }`).catch(() => null),
     client.fetch(`*[_type == "post"] | order(publishedAt desc){
       title, "slug": slug.current, category, rating, mainImage
     }`).catch(() => [] as any[]),
-    client.fetch(`*[_type == "product"] | order(_createdAt desc)[0...12]{
+    client.fetch(`*[_type == "product"] | order(_createdAt desc){
       title, "slug": slug.current, mainImage
     }`).catch(() => [] as any[]),
   ])
 
-  function sectionCards(category: string) {
-    return (posts as any[])
-      .filter(p => p.category === category)
-      .map(p => ({
+  function buildCards(category: string, basePath: string) {
+    const all = (posts as any[]).filter(p => p.category === category)
+    const visible = all.slice(0, 6)
+    return {
+      cards: visible.map(p => ({
         title: p.title,
-        href: `/${category === 'games' ? 'reviews' : category}/${p.slug}`,
+        href: `${basePath}/${p.slug}`,
         imageUrl: p.mainImage
           ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()
           : undefined,
         rating: p.rating ?? undefined,
-      }))
+      })),
+      total: all.length,
+    }
   }
+
+  const shopCards = (products as any[]).slice(0, 6).map(p => ({
+    title: p.title,
+    href: `/shop/${p.slug}`,
+    imageUrl: p.mainImage
+      ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()
+      : undefined,
+  }))
 
   return (
     <>
@@ -62,7 +72,6 @@ export default async function Home() {
           />
         )}
         <div className="absolute inset-0 bg-black/25" />
-
         {hero?.ctaText && hero?.ctaLink && (
           <div className="absolute bottom-4 right-5">
             <Link
@@ -81,27 +90,24 @@ export default async function Home() {
       {/* Category sections */}
       <div className="py-8 space-y-10">
         {SECTIONS.map(section => {
-          const cards = sectionCards(section.key)
+          const { cards, total } = buildCards(section.key, section.href)
           return (
             <section key={section.key}>
               <div className="flex items-center gap-2.5 px-5 mb-4">
                 <span className="text-xl">{section.icon}</span>
                 <h2 className="text-base font-bold text-white tracking-tight">{section.label}</h2>
-                <Link
-                  href={section.href}
-                  className="ml-auto text-xs text-white/25 hover:text-white/60 transition"
-                >
-                  All →
-                </Link>
+                {total > 0 && (
+                  <Link href={section.href} className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
+                    See all ({total}) →
+                  </Link>
+                )}
               </div>
               <div className="pl-5">
                 {cards.length > 0 ? (
                   <SwipeCarousel>
-                    {cards.map((card, i) => (
-                      <ReviewCard key={i} {...card} />
-                    ))}
-                    {/* Fade-out spacer */}
-                    <div className="shrink-0 w-5" />
+                    {cards.map((card, i) => <ReviewCard key={i} {...card} />)}
+                    <SeeAllCard href={section.href} total={total} label={`See all ${section.label}`} />
+                    <div className="shrink-0 w-3" />
                   </SwipeCarousel>
                 ) : (
                   <p className="text-xs text-white/20 py-6">Coming soon</p>
@@ -116,26 +122,18 @@ export default async function Home() {
           <div className="flex items-center gap-2.5 px-5 mb-4">
             <span className="text-xl">🛒</span>
             <h2 className="text-base font-bold text-white tracking-tight">Shop</h2>
-            <Link href="/shop" className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
-              All →
-            </Link>
+            {products.length > 0 && (
+              <Link href="/shop" className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
+                See all ({(products as any[]).length}) →
+              </Link>
+            )}
           </div>
           <div className="pl-5">
-            {products.length > 0 ? (
+            {shopCards.length > 0 ? (
               <SwipeCarousel>
-                {(products as any[]).map((p, i) => (
-                  <ReviewCard
-                    key={i}
-                    title={p.title}
-                    href={`/shop/${p.slug}`}
-                    imageUrl={
-                      p.mainImage
-                        ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()
-                        : undefined
-                    }
-                  />
-                ))}
-                <div className="shrink-0 w-5" />
+                {shopCards.map((card, i) => <ReviewCard key={i} {...card} />)}
+                <SeeAllCard href="/shop" total={(products as any[]).length} label="See all Products" />
+                <div className="shrink-0 w-3" />
               </SwipeCarousel>
             ) : (
               <p className="text-xs text-white/20 py-6">Coming soon</p>

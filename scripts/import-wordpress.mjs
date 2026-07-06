@@ -106,7 +106,7 @@ for (const item of posts) {
     await client.createOrReplace(doc)
     console.log(`  ✅ [${category}] ${title}`)
     imported++
-  } catch (err: any) {
+  } catch (err) {
     console.log(`  ❌ Failed: ${title} — ${err.message}`)
     failed++
   }
@@ -143,7 +143,7 @@ for (const item of products) {
     await client.createOrReplace(doc)
     console.log(`  ✅ [product] ${title}`)
     imported++
-  } catch (err: any) {
+  } catch (err) {
     console.log(`  ❌ Failed: ${title} — ${err.message}`)
     failed++
   }
