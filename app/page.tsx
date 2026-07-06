@@ -73,7 +73,7 @@ export default async function Home() {
         )}
         <div className="absolute inset-0 bg-black/25" />
         {hero?.ctaText && hero?.ctaLink && (
-          <div className="absolute bottom-4 right-5">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
             <Link
               href={hero.ctaLink}
               className="inline-flex items-center gap-2 bg-[#e53935] hover:bg-[#c62828] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition shadow-lg"
