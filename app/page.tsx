@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 }
 
 const SECTIONS = [
-  { key: 'games',      label: 'Game Reviews',  icon: '🎮', href: '/reviews' },
-  { key: 'tvshows',    label: 'TV Shows',       icon: '📺', href: '/tvshows' },
-  { key: 'gear',       label: 'Gear',           icon: '🎧', href: '/gear' },
-  { key: 'gaming',     label: 'Gaming Blogs',   icon: '🕹️', href: '/blogs' },
-  { key: 'kickboxing', label: 'Kickboxing',     icon: '🥊', href: '/kickboxing' },
+  { key: 'games',      label: 'Game Reviews',  href: '/reviews' },
+  { key: 'tvshows',    label: 'TV Shows',       href: '/tvshows' },
+  { key: 'gear',       label: 'Gear',           href: '/gear' },
+  { key: 'gaming',     label: 'Gaming Blogs',   href: '/blogs' },
+  { key: 'kickboxing', label: 'Kickboxing',     href: '/kickboxing' },
 ]
 
 export default async function Home() {
@@ -124,7 +124,6 @@ export default async function Home() {
           return (
             <section key={section.key}>
               <div className="flex items-center gap-2.5 px-5 mb-4">
-                <span className="text-xl">{section.icon}</span>
                 <h2 className="text-base font-bold text-white tracking-tight">{section.label}</h2>
                 {total > 0 && (
                   <Link href={section.href} className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
@@ -150,7 +149,6 @@ export default async function Home() {
         {/* Shop */}
         <section>
           <div className="flex items-center gap-2.5 px-5 mb-4">
-            <span className="text-xl">🛒</span>
             <h2 className="text-base font-bold text-white tracking-tight">Shop</h2>
             {products.length > 0 && (
               <Link href="/shop" className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
