@@ -106,7 +106,7 @@ export default async function Home() {
           {hero?.ctaText && hero?.ctaLink && (
             <Link
               href={hero.ctaLink}
-              className="inline-flex items-center gap-2 bg-[#e53935] hover:bg-[#c62828] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition shadow-lg whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 bg-[#e53935] hover:bg-[#c62828] text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow-lg whitespace-nowrap"
             >
               {hero.ctaText}
               <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
