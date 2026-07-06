@@ -42,7 +42,7 @@ export default function Navbar() {
         </button>
 
         {open && (
-          <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 bg-[#141726] border border-white/10 rounded-xl shadow-2xl py-1.5 min-w-[180px] text-center z-50">
+          <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl py-1.5 min-w-[180px] text-center z-50">
             <Link
               href="/"
               className="block px-6 py-3 text-sm text-white/70 hover:text-white hover:bg-white/5 transition rounded-lg mx-1"
