@@ -25,7 +25,7 @@ const SECTIONS = [
 export default async function Home() {
   const [hero, posts, products] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
-      "imageUrl": image.asset->url, ctaText, ctaLink
+      "imageUrl": image.asset->url, ctaText, ctaLink, textLines
     }`).catch(() => null),
     client.fetch(`*[_type == "post"] | order(publishedAt desc){
       title, "slug": slug.current, category, rating, mainImage
@@ -72,19 +72,49 @@ export default async function Home() {
           />
         )}
         <div className="absolute inset-0 bg-black/25" />
-        {hero?.ctaText && hero?.ctaLink && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-center">
+          {hero?.textLines?.length > 0 && (
+            <div className="flex flex-col items-center gap-0.5">
+              {hero.textLines.map((line: any, i: number) => {
+                const colorMap: Record<string, string> = {
+                  white: '#ffffff',
+                  lightgrey: '#cccccc',
+                  red: '#e53935',
+                  yellow: '#ffd600',
+                  orange: '#ff6d00',
+                }
+                const sizeMap: Record<string, string> = {
+                  sm: '0.75rem', base: '1rem', lg: '1.125rem',
+                  xl: '1.25rem', '2xl': '1.5rem', '3xl': '1.875rem', '4xl': '2.25rem',
+                }
+                return (
+                  <span
+                    key={i}
+                    style={{
+                      color: colorMap[line.color] ?? '#ffffff',
+                      fontSize: sizeMap[line.size] ?? '1.125rem',
+                      fontWeight: line.bold ? 700 : 400,
+                      textShadow: '0 1px 6px rgba(0,0,0,0.7)',
+                    }}
+                  >
+                    {line.text}
+                  </span>
+                )
+              })}
+            </div>
+          )}
+          {hero?.ctaText && hero?.ctaLink && (
             <Link
               href={hero.ctaLink}
-              className="inline-flex items-center gap-2 bg-[#e53935] hover:bg-[#c62828] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition shadow-lg"
+              className="inline-flex items-center gap-2 bg-[#e53935] hover:bg-[#c62828] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition shadow-lg whitespace-nowrap"
             >
               {hero.ctaText}
               <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 7h10M8 3l4 4-4 4" />
               </svg>
             </Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Category sections */}

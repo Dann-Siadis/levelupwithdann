@@ -12,6 +12,62 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: 'textLines',
+      title: 'Text (above button)',
+      description: 'Each item = one line. Add as many as you want.',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'textLine',
+          title: 'Line',
+          fields: [
+            defineField({ name: 'text', type: 'string', title: 'Text' }),
+            defineField({
+              name: 'size',
+              type: 'string',
+              title: 'Size',
+              initialValue: 'lg',
+              options: {
+                list: [
+                  { title: 'Small', value: 'sm' },
+                  { title: 'Medium', value: 'base' },
+                  { title: 'Large', value: 'lg' },
+                  { title: 'XL', value: 'xl' },
+                  { title: '2XL', value: '2xl' },
+                  { title: '3XL', value: '3xl' },
+                  { title: '4XL', value: '4xl' },
+                ],
+                layout: 'radio',
+                direction: 'horizontal',
+              },
+            }),
+            defineField({
+              name: 'color',
+              type: 'string',
+              title: 'Color',
+              initialValue: 'white',
+              options: {
+                list: [
+                  { title: 'White', value: 'white' },
+                  { title: 'Light grey', value: 'lightgrey' },
+                  { title: 'Red', value: 'red' },
+                  { title: 'Yellow', value: 'yellow' },
+                  { title: 'Orange', value: 'orange' },
+                ],
+                layout: 'radio',
+                direction: 'horizontal',
+              },
+            }),
+            defineField({ name: 'bold', type: 'boolean', title: 'Bold', initialValue: false }),
+          ],
+          preview: {
+            select: { title: 'text', subtitle: 'size' },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'ctaText',
       type: 'string',
       title: 'Button Text',
