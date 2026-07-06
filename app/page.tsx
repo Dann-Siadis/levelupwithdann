@@ -4,6 +4,7 @@ import { client, urlFor } from '@/lib/sanity'
 import ReviewCard from './components/ReviewCard'
 import SeeAllCard from './components/SeeAllCard'
 import SwipeCarousel from './components/SwipeCarousel'
+import AffiliateBanner from './components/AffiliateBanner'
 import type { Metadata } from 'next'
 
 export const revalidate = 60
@@ -23,7 +24,7 @@ const SECTIONS = [
 ]
 
 export default async function Home() {
-  const [hero, posts, products] = await Promise.all([
+  const [hero, posts, products, banner] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
       "imageUrl": image.asset->url, ctaText, ctaLink, textLines
     }`).catch(() => null),
@@ -33,6 +34,9 @@ export default async function Home() {
     client.fetch(`*[_type == "product"] | order(_createdAt desc){
       title, "slug": slug.current, mainImage
     }`).catch(() => [] as any[]),
+    client.fetch(`*[_type == "affiliateBanner" && active == true][0]{
+      "imageUrl": image.asset->url, textLines, ctaText, ctaLink
+    }`).catch(() => null),
   ])
 
   function buildCards(category: string, basePath: string) {
@@ -119,10 +123,20 @@ export default async function Home() {
 
       {/* Category sections */}
       <div className="py-8 space-y-10">
-        {SECTIONS.map(section => {
+        {SECTIONS.map((section, idx) => {
           const { cards, total } = buildCards(section.key, section.href)
           return (
             <section key={section.key}>
+              {section.key === 'gaming' && banner && (
+                <div className="mb-10">
+                  <AffiliateBanner
+                    imageUrl={banner.imageUrl}
+                    textLines={banner.textLines}
+                    ctaText={banner.ctaText}
+                    ctaLink={banner.ctaLink}
+                  />
+                </div>
+              )}
               <div className="flex items-center gap-2.5 px-5 mb-4">
                 <h2 className="text-base font-bold text-white tracking-tight">{section.label}</h2>
                 {total > 0 && (
