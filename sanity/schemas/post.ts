@@ -36,8 +36,8 @@ export default defineType({
     defineField({
       name: 'rating',
       type: 'number',
-      title: 'Rating (1–5)',
-      validation: Rule => Rule.min(1).max(5),
+      title: 'Score (0–10)',
+      validation: Rule => Rule.min(0).max(10).integer(),
     }),
     defineField({
       name: 'mainImage',
