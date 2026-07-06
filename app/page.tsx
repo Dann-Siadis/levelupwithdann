@@ -1,220 +1,148 @@
-import Link from "next/link"
-import { client } from "@/lib/sanity"
-import type { Metadata } from "next"
+import Link from 'next/link'
+import Image from 'next/image'
+import { client, urlFor } from '@/lib/sanity'
+import ReviewCard from './components/ReviewCard'
+import SwipeCarousel from './components/SwipeCarousel'
+import type { Metadata } from 'next'
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: "LevelUpWithDann — Gaming Reviews, Gear & Kickboxing",
-  description:
-    "Honest game reviews, top gear picks, gaming blogs, and kickboxing content. No fluff — just real takes from Dann.",
-  alternates: { canonical: "https://www.levelupwithdann.com" },
-  openGraph: {
-    title: "LevelUpWithDann — Gaming Reviews, Gear & Kickboxing",
-    description: "Honest game reviews, top gear picks, gaming blogs, and kickboxing content.",
-    url: "https://www.levelupwithdann.com",
-    siteName: "LevelUpWithDann",
-    type: "website",
-  },
+  title: 'LevelUpWithDann — Gaming Reviews, Gear & Kickboxing',
+  description: 'Honest game reviews, top gear picks, gaming blogs, and kickboxing content.',
+  alternates: { canonical: 'https://www.levelupwithdann.com' },
 }
 
-const categories = [
-  {
-    href: "/reviews",
-    label: "Game Reviews",
-    description: "Honest takes on the latest releases — scored and broken down",
-    icon: "🎮",
-  },
-  {
-    href: "/gear",
-    label: "Gear Reviews",
-    description: "Mice, keyboards, headsets and more — tested by a real gamer",
-    icon: "🎧",
-  },
-  {
-    href: "/blogs",
-    label: "Gaming Blogs",
-    description: "Tips, tier lists, and hot takes on gaming culture",
-    icon: "✍️",
-  },
-  {
-    href: "/kickboxing",
-    label: "Kickboxing",
-    description: "Training logs, fight prep, and the athlete side of Dann",
-    icon: "🥊",
-  },
+const SECTIONS = [
+  { key: 'games',      label: 'Game Reviews',   icon: '🎮', href: '/reviews' },
+  { key: 'tvshows',    label: 'TV Shows',        icon: '📺', href: '/tvshows' },
+  { key: 'gear',       label: 'Gear',            icon: '🎧', href: '/gear' },
+  { key: 'gaming',     label: 'Gaming Blogs',    icon: '🕹️', href: '/blogs' },
+  { key: 'kickboxing', label: 'Kickboxing',      icon: '🥊', href: '/kickboxing' },
 ]
 
 export default async function Home() {
-  const [reviews, blogs] = await Promise.all([
-    client
-      .fetch(
-        `*[_type == "review"] | order(_createdAt desc)[0...6]{
-          title, "slug": slug.current, rating, platform, category, excerpt, publishedAt
-        }`
-      )
-      .catch(() => [] as any[]),
-    client
-      .fetch(
-        `*[_type == "blog"] | order(publishedAt desc)[0...3]{
-          title, "slug": slug.current, category, excerpt, publishedAt
-        }`
-      )
-      .catch(() => [] as any[]),
+  const [hero, posts, products] = await Promise.all([
+    client.fetch(`*[_type == "heroSettings"][0]{
+      "imageUrl": image.asset->url,
+      ctaText,
+      ctaLink
+    }`).catch(() => null),
+    client.fetch(`*[_type == "post"] | order(publishedAt desc){
+      title, "slug": slug.current, category, rating, mainImage
+    }`).catch(() => [] as any[]),
+    client.fetch(`*[_type == "product"] | order(_createdAt desc)[0...12]{
+      title, "slug": slug.current, mainImage
+    }`).catch(() => [] as any[]),
   ])
+
+  function sectionCards(category: string) {
+    return (posts as any[])
+      .filter(p => p.category === category)
+      .map(p => ({
+        title: p.title,
+        href: `/${category === 'games' ? 'reviews' : category}/${p.slug}`,
+        imageUrl: p.mainImage
+          ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()
+          : undefined,
+        rating: p.rating ?? undefined,
+      }))
+  }
 
   return (
     <>
-      {/* Hero */}
-      <section className="hero-bg min-h-[90vh] flex items-center justify-center text-center px-6 relative overflow-hidden">
-        <div className="relative z-10 max-w-3xl mx-auto">
-          <p className="text-xs tracking-[0.3em] uppercase text-[#00ff88]/60 mb-6">
-            Gaming · Gear · Kickboxing
-          </p>
-          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6 text-white">
-            Level Up Your
-            <br />
-            <span className="text-[#00ff88]">Game</span>
-          </h1>
-          <p className="text-lg text-white/50 max-w-xl mx-auto mb-10 leading-relaxed">
-            Honest reviews, gear picks, and gaming culture — no sponsorships, just real opinions from a gamer who actually plays.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      {/* Hero Banner */}
+      <div className="relative overflow-hidden" style={{ height: 'clamp(160px, 28vh, 300px)' }}>
+        {hero?.imageUrl ? (
+          <Image src={hero.imageUrl} alt="Hero" fill priority style={{ objectFit: 'cover' }} />
+        ) : (
+          <div
+            className="w-full h-full"
+            style={{ background: 'linear-gradient(135deg, #0d0f1a 0%, #1e0a3c 50%, #0a1628 100%)' }}
+          />
+        )}
+        <div className="absolute inset-0 bg-black/25" />
+
+        {hero?.ctaText && hero?.ctaLink && (
+          <div className="absolute bottom-4 right-5">
             <Link
-              href="/reviews"
-              className="bg-[#00ff88] text-[#0d0d14] font-bold px-8 py-3.5 rounded-lg hover:bg-[#00cc6a] transition text-sm"
+              href={hero.ctaLink}
+              className="inline-flex items-center gap-2 bg-[#e53935] hover:bg-[#c62828] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition shadow-lg"
             >
-              Browse Reviews →
-            </Link>
-            <Link
-              href="/blogs"
-              className="border border-white/15 text-white font-semibold px-8 py-3.5 rounded-lg hover:bg-white/5 transition text-sm"
-            >
-              Read Latest
+              {hero.ctaText}
+              <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg>
             </Link>
           </div>
-        </div>
-      </section>
+        )}
+      </div>
 
-      {/* Categories */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <p className="text-xs tracking-[0.3em] uppercase text-[#00ff88]/50 mb-2">Explore</p>
-        <h2 className="text-3xl font-bold text-white mb-10">What are you looking for?</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {categories.map(cat => (
-            <Link
-              key={cat.href}
-              href={cat.href}
-              className="group bg-[#1a1a2e] border border-white/5 rounded-2xl p-6 hover:border-[#00ff88]/30 hover:bg-[#1e1e35] transition-all duration-200"
-            >
-              <span className="text-3xl mb-4 block">{cat.icon}</span>
-              <h3 className="font-bold text-white mb-2 group-hover:text-[#00ff88] transition">
-                {cat.label}
-              </h3>
-              <p className="text-white/40 text-sm leading-relaxed">{cat.description}</p>
+      {/* Category sections */}
+      <div className="py-8 space-y-10">
+        {SECTIONS.map(section => {
+          const cards = sectionCards(section.key)
+          return (
+            <section key={section.key}>
+              <div className="flex items-center gap-2.5 px-5 mb-4">
+                <span className="text-xl">{section.icon}</span>
+                <h2 className="text-base font-bold text-white tracking-tight">{section.label}</h2>
+                <Link
+                  href={section.href}
+                  className="ml-auto text-xs text-white/25 hover:text-white/60 transition"
+                >
+                  All →
+                </Link>
+              </div>
+              <div className="pl-5">
+                {cards.length > 0 ? (
+                  <SwipeCarousel>
+                    {cards.map((card, i) => (
+                      <ReviewCard key={i} {...card} />
+                    ))}
+                    {/* Fade-out spacer */}
+                    <div className="shrink-0 w-5" />
+                  </SwipeCarousel>
+                ) : (
+                  <p className="text-xs text-white/20 py-6">Coming soon</p>
+                )}
+              </div>
+            </section>
+          )
+        })}
+
+        {/* Shop */}
+        <section>
+          <div className="flex items-center gap-2.5 px-5 mb-4">
+            <span className="text-xl">🛒</span>
+            <h2 className="text-base font-bold text-white tracking-tight">Shop</h2>
+            <Link href="/shop" className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
+              All →
             </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Latest Reviews */}
-      {reviews.length > 0 && (
-        <section className="max-w-6xl mx-auto px-6 py-10">
-          <p className="text-xs tracking-[0.3em] uppercase text-[#00ff88]/50 mb-2">Latest</p>
-          <h2 className="text-3xl font-bold text-white mb-10">Fresh Reviews</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {reviews.map((review: any) => (
-              <Link
-                key={review.slug}
-                href={`/reviews/${review.slug}`}
-                className="group bg-[#1a1a2e] border border-white/5 rounded-2xl p-6 hover:border-[#00ff88]/30 transition-all duration-200"
-              >
-                {review.platform && (
-                  <span className="inline-block bg-[#00ff88]/10 text-[#00ff88] text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                    {review.platform}
-                  </span>
-                )}
-                <h3 className="font-bold text-white text-lg mb-2 group-hover:text-[#00ff88] transition line-clamp-2">
-                  {review.title}
-                </h3>
-                {review.excerpt && (
-                  <p className="text-white/40 text-sm line-clamp-2 mb-4">{review.excerpt}</p>
-                )}
-                {review.rating != null && (
-                  <div className="flex items-center gap-3 mt-auto">
-                    <div className="flex-1 bg-white/5 rounded-full h-1.5">
-                      <div
-                        className="bg-[#00ff88] h-1.5 rounded-full"
-                        style={{ width: `${(review.rating / 10) * 100}%` }}
-                      />
-                    </div>
-                    <span className="text-[#00ff88] text-sm font-bold shrink-0">
-                      {review.rating}/10
-                    </span>
-                  </div>
-                )}
-              </Link>
-            ))}
           </div>
-          <div className="mt-8 text-center">
-            <Link href="/reviews" className="text-sm text-white/40 hover:text-white transition">
-              All reviews →
-            </Link>
+          <div className="pl-5">
+            {products.length > 0 ? (
+              <SwipeCarousel>
+                {(products as any[]).map((p, i) => (
+                  <ReviewCard
+                    key={i}
+                    title={p.title}
+                    href={`/shop/${p.slug}`}
+                    imageUrl={
+                      p.mainImage
+                        ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()
+                        : undefined
+                    }
+                  />
+                ))}
+                <div className="shrink-0 w-5" />
+              </SwipeCarousel>
+            ) : (
+              <p className="text-xs text-white/20 py-6">Coming soon</p>
+            )}
           </div>
         </section>
-      )}
-
-      {/* Latest Blogs */}
-      {blogs.length > 0 && (
-        <section className="max-w-6xl mx-auto px-6 py-10">
-          <p className="text-xs tracking-[0.3em] uppercase text-[#00ff88]/50 mb-2">From the Blog</p>
-          <h2 className="text-3xl font-bold text-white mb-10">Latest Posts</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {blogs.map((blog: any) => (
-              <Link
-                key={blog.slug}
-                href={`/blogs/${blog.slug}`}
-                className="group bg-[#1a1a2e] border border-white/5 rounded-2xl p-6 hover:border-[#00ff88]/30 transition-all duration-200"
-              >
-                {blog.category && (
-                  <span className="inline-block bg-[#7c3aed]/20 text-[#a78bfa] text-xs font-semibold px-3 py-1 rounded-full mb-3 capitalize">
-                    {blog.category}
-                  </span>
-                )}
-                <h3 className="font-bold text-white text-lg mb-2 group-hover:text-[#00ff88] transition line-clamp-2">
-                  {blog.title}
-                </h3>
-                {blog.excerpt && (
-                  <p className="text-white/40 text-sm line-clamp-3">{blog.excerpt}</p>
-                )}
-              </Link>
-            ))}
-          </div>
-          <div className="mt-8 text-center">
-            <Link href="/blogs" className="text-sm text-white/40 hover:text-white transition">
-              All posts →
-            </Link>
-          </div>
-        </section>
-      )}
-
-      {/* About Dann */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <div className="bg-[#1a1a2e] border border-white/5 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center">
-          <div className="shrink-0">
-            <div className="w-20 h-20 rounded-full bg-[#00ff88]/10 border-2 border-[#00ff88]/20 flex items-center justify-center text-3xl">
-              🎮
-            </div>
-          </div>
-          <div>
-            <p className="text-xs tracking-[0.3em] uppercase text-[#00ff88]/50 mb-2">About</p>
-            <h2 className="text-2xl font-bold text-white mb-3">Who is Dann?</h2>
-            <p className="text-white/50 leading-relaxed max-w-2xl">
-              I'm Dann — gamer, kickboxer, and gear nerd. I built LevelUpWithDann to share honest game reviews and real gear recommendations without the noise. No paid placements, no affiliate pressure — just the content worth your time.
-            </p>
-          </div>
-        </div>
-      </section>
+      </div>
     </>
   )
 }
