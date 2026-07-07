@@ -129,7 +129,7 @@ export default async function Home() {
           const { cards, total } = buildCards(section.key, section.href)
           return (
             <section key={section.key}>
-              {section.key === 'gaming' && banner && (
+              {section.key === 'tvshows' && banner && (
                 <div className="mb-10">
                   <AffiliateBanner
                     imageUrl={banner.imageUrl}
