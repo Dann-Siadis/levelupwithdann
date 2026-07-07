@@ -26,9 +26,6 @@ export default function SeeAllCard({ href, total, label = 'See all' }: SeeAllCar
       </div>
       <div className="text-center px-4">
         <p className="text-sm font-bold text-white group-hover:text-[#e53935] transition">{label}</p>
-        {total != null && total > 0 && (
-          <p className="text-xs text-white/25 mt-1">{total} items</p>
-        )}
       </div>
     </Link>
   )

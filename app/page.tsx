@@ -5,6 +5,7 @@ import SeeAllCard from './components/SeeAllCard'
 import SwipeCarousel from './components/SwipeCarousel'
 import AffiliateBanner from './components/AffiliateBanner'
 import HeroSlider from './components/HeroSlider'
+import ShopBanner from './components/ShopBanner'
 import type { Metadata } from 'next'
 
 export const revalidate = 60
@@ -24,7 +25,7 @@ const SECTIONS = [
 ]
 
 export default async function Home() {
-  const [hero, posts, products, banner] = await Promise.all([
+  const [hero, posts, products, banner, shopBannerData] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
       slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
@@ -36,6 +37,9 @@ export default async function Home() {
     }`).catch(() => [] as any[]),
     client.fetch(`*[_type == "affiliateBanner" && active == true][0]{
       "imageUrl": image.asset->url, textLines, ctaText, ctaLink
+    }`).catch(() => null),
+    client.fetch(`*[_type == "shopBanner" && active == true][0]{
+      "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink
     }`).catch(() => null),
   ])
 
@@ -131,6 +135,17 @@ export default async function Home() {
             )}
           </div>
         </section>
+
+        {/* Shop Banner */}
+        {shopBannerData && (
+          <ShopBanner
+            imageUrl={shopBannerData.imageUrl}
+            heading={shopBannerData.heading}
+            subtext={shopBannerData.subtext}
+            ctaText={shopBannerData.ctaText}
+            ctaLink={shopBannerData.ctaLink}
+          />
+        )}
       </div>
     </>
   )
