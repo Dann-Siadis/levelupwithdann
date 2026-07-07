@@ -6,6 +6,7 @@ import SwipeCarousel from './components/SwipeCarousel'
 import AffiliateBanner from './components/AffiliateBanner'
 import HeroSlider from './components/HeroSlider'
 import ShopBanner from './components/ShopBanner'
+import AffiliateCard from './components/AffiliateCard'
 import type { Metadata } from 'next'
 
 export const revalidate = 60
@@ -25,7 +26,7 @@ const SECTIONS = [
 ]
 
 export default async function Home() {
-  const [hero, posts, products, banner, shopBannerData] = await Promise.all([
+  const [hero, posts, products, banner, shopBannerData, gameAffiliate] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
       slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
@@ -40,6 +41,9 @@ export default async function Home() {
     }`).catch(() => null),
     client.fetch(`*[_type == "shopBanner" && active == true][0]{
       "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink
+    }`).catch(() => null),
+    client.fetch(`*[_type == "gameAffiliateCard" && active == true][0]{
+      title, affiliateLink, "imageUrl": image.asset->url
     }`).catch(() => null),
   ])
 
@@ -96,7 +100,19 @@ export default async function Home() {
               <div className="pl-5">
                 {cards.length > 0 ? (
                   <SwipeCarousel>
-                    {cards.map((card, i) => <ReviewCard key={i} {...card} />)}
+                    {cards.map((card, i) => (
+                      <>
+                        <ReviewCard key={i} {...card} />
+                        {section.key === 'games' && i === 3 && gameAffiliate && (
+                          <AffiliateCard
+                            key="affiliate"
+                            title={gameAffiliate.title}
+                            href={gameAffiliate.affiliateLink}
+                            imageUrl={gameAffiliate.imageUrl}
+                          />
+                        )}
+                      </>
+                    ))}
                     <SeeAllCard href={section.href} total={total} label={`See all ${section.label}`} />
                     <div className="shrink-0 w-3" />
                   </SwipeCarousel>
