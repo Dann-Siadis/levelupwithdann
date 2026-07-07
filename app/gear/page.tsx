@@ -3,7 +3,7 @@ import ReviewCard from '@/app/components/ReviewCard'
 import type { Metadata } from 'next'
 
 export const revalidate = 60
-export const metadata: Metadata = { title: 'Gear Reviews — LevelUpWithDann' }
+export const metadata: Metadata = { title: 'Tech & Gear — LevelUpWithDann' }
 
 export default async function GearPage() {
   const posts = await client.fetch(`
@@ -15,8 +15,7 @@ export default async function GearPage() {
   return (
     <div className="max-w-6xl mx-auto px-5 py-10">
       <div className="flex items-center gap-3 mb-8">
-        <span className="text-3xl">🎧</span>
-        <h1 className="text-2xl font-bold text-white">Gear</h1>
+        <h1 className="text-2xl font-bold text-white">Tech & Gear</h1>
         {posts.length > 0 && <span className="ml-1 text-white/25 text-sm">{posts.length} reviews</span>}
       </div>
       {posts.length === 0 ? (

@@ -25,8 +25,8 @@ export default defineType({
       options: {
         list: [
           { title: '🎮 Game Reviews', value: 'games' },
-          { title: '📺 TV Shows', value: 'tvshows' },
-          { title: '🎧 Gear', value: 'gear' },
+          { title: '📺 Movie & TV Reviews', value: 'tvshows' },
+          { title: '🎧 Tech & Gear', value: 'gear' },
           { title: '🕹️ Gaming Blogs', value: 'gaming' },
           { title: '🥊 Kickboxing', value: 'kickboxing' },
         ],
