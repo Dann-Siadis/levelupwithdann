@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { client, urlFor } from '@/lib/sanity'
 import ReviewCard from './components/ReviewCard'
 import SeeAllCard from './components/SeeAllCard'
 import SwipeCarousel from './components/SwipeCarousel'
 import AffiliateBanner from './components/AffiliateBanner'
+import HeroSlider from './components/HeroSlider'
 import type { Metadata } from 'next'
 
 export const revalidate = 60
@@ -26,7 +26,7 @@ const SECTIONS = [
 export default async function Home() {
   const [hero, posts, products, banner] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
-      "imageUrl": image.asset->url, ctaText, ctaLink, textLines
+      slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
     client.fetch(`*[_type == "post"] | order(publishedAt desc){
       title, subtitle, "slug": slug.current, category, rating, mainImage
@@ -67,61 +67,8 @@ export default async function Home() {
 
   return (
     <>
-      {/* Hero Banner */}
-      <div className="relative overflow-hidden" style={{ height: 'clamp(160px, 28vh, 300px)' }}>
-        {hero?.imageUrl ? (
-          <Image src={hero.imageUrl} alt="Hero" fill priority style={{ objectFit: 'cover' }} />
-        ) : (
-          <div
-            className="w-full h-full"
-            style={{ background: 'linear-gradient(135deg, #0d0f1a 0%, #1e0a3c 50%, #0a1628 100%)' }}
-          />
-        )}
-        <div className="absolute inset-0 bg-black/25" />
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-center">
-          {hero?.textLines?.length > 0 && (
-            <div className="flex flex-col items-center gap-0.5">
-              {hero.textLines.map((line: any, i: number) => {
-                const colorMap: Record<string, string> = {
-                  white: '#ffffff',
-                  lightgrey: '#cccccc',
-                  red: '#e53935',
-                  yellow: '#ffd600',
-                  orange: '#ff6d00',
-                }
-                const sizeMap: Record<string, string> = {
-                  sm: '0.75rem', base: '1rem', lg: '1.125rem',
-                  xl: '1.25rem', '2xl': '1.5rem', '3xl': '1.875rem', '4xl': '2.25rem',
-                }
-                return (
-                  <span
-                    key={i}
-                    style={{
-                      color: colorMap[line.color] ?? '#ffffff',
-                      fontSize: sizeMap[line.size] ?? '1.125rem',
-                      fontWeight: line.bold ? 700 : 400,
-                      textShadow: '0 1px 6px rgba(0,0,0,0.7)',
-                    }}
-                  >
-                    {line.text}
-                  </span>
-                )
-              })}
-            </div>
-          )}
-          {hero?.ctaText && hero?.ctaLink && (
-            <Link
-              href={hero.ctaLink}
-              className="inline-flex items-center gap-1.5 bg-[#e53935] hover:bg-[#c62828] text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow-lg whitespace-nowrap"
-            >
-              {hero.ctaText}
-              <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2 7h10M8 3l4 4-4 4" />
-              </svg>
-            </Link>
-          )}
-        </div>
-      </div>
+      {/* Hero Slider */}
+      <HeroSlider slides={hero?.slides ?? []} />
 
       {/* Category sections */}
       <div className="py-8 space-y-10">
