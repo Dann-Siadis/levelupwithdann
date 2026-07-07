@@ -8,10 +8,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between gap-10">
           {/* Brand */}
           <div className="max-w-xs">
-            <Image src="/lwdlogo.png" alt="LevelUpWithDann" width={64} height={48} className="object-contain mb-3" />
-            <p className="text-white/40 text-sm leading-relaxed">
-              Honest game reviews, top gear picks, and gaming culture. No sponsorships — just real opinions from a gamer who actually plays.
-            </p>
+            <Image src="/lwdlogo.png" alt="LevelUpWithDann" width={64} height={48} className="object-contain" />
           </div>
 
           {/* Links */}
