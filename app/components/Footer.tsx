@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -7,10 +8,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between gap-10">
           {/* Brand */}
           <div className="max-w-xs">
-            <p className="font-extrabold text-xl tracking-tight mb-3">
-              <span className="text-white">LevelUp</span>
-              <span className="text-[#00ff88]">Dann</span>
-            </p>
+            <Image src="/lwdlogo.png" alt="LevelUpWithDann" width={64} height={48} className="object-contain mb-3" />
             <p className="text-white/40 text-sm leading-relaxed">
               Honest game reviews, top gear picks, and gaming culture. No sponsorships — just real opinions from a gamer who actually plays.
             </p>
@@ -21,9 +19,11 @@ export default function Footer() {
             <div>
               <h3 className="font-bold text-xs tracking-widest uppercase text-white/30 mb-4">Content</h3>
               <ul className="space-y-2.5 text-sm text-white/50">
-                <li><Link href="/reviews" className="hover:text-white transition">Reviews</Link></li>
-                <li><Link href="/gear" className="hover:text-white transition">Gear</Link></li>
-                <li><Link href="/blogs" className="hover:text-white transition">Blogs</Link></li>
+                <li><Link href="/reviews" className="hover:text-white transition">Game Reviews</Link></li>
+                <li><Link href="/gear" className="hover:text-white transition">Tech & Gear</Link></li>
+                <li><Link href="/blogs" className="hover:text-white transition">Gaming Blogs</Link></li>
+                <li><Link href="/tvshows" className="hover:text-white transition">Movie & TV Reviews</Link></li>
+                <li><Link href="/kickboxing" className="hover:text-white transition">Kickboxing</Link></li>
                 <li><Link href="/shop" className="hover:text-white transition">Shop</Link></li>
               </ul>
             </div>
