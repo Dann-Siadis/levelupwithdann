@@ -143,7 +143,7 @@ export default async function Home() {
                 <h2 className="text-base font-bold text-white tracking-tight">{section.label}</h2>
                 {total > 0 && (
                   <Link href={section.href} className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
-                    See all ({total}) →
+                    See all →
                   </Link>
                 )}
               </div>
@@ -168,7 +168,7 @@ export default async function Home() {
             <h2 className="text-base font-bold text-white tracking-tight">Shop</h2>
             {products.length > 0 && (
               <Link href="/shop" className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
-                See all ({(products as any[]).length}) →
+                See all →
               </Link>
             )}
           </div>
