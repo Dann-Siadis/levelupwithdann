@@ -36,7 +36,7 @@ export default async function Home() {
       title, subtitle, "slug": slug.current, mainImage
     }`).catch(() => [] as any[]),
     client.fetch(`*[_type == "affiliateBanner" && active == true][0]{
-      "imageUrl": image.asset->url, textLines, ctaText, ctaLink
+      slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
     client.fetch(`*[_type == "shopBanner" && active == true][0]{
       "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink
@@ -80,14 +80,9 @@ export default async function Home() {
           const { cards, total } = buildCards(section.key, section.href)
           return (
             <section key={section.key}>
-              {section.key === 'tvshows' && banner && (
+              {section.key === 'tvshows' && banner?.slides?.length > 0 && (
                 <div className="mb-10">
-                  <AffiliateBanner
-                    imageUrl={banner.imageUrl}
-                    textLines={banner.textLines}
-                    ctaText={banner.ctaText}
-                    ctaLink={banner.ctaLink}
-                  />
+                  <AffiliateBanner slides={banner.slides} />
                 </div>
               )}
               <div className="flex items-center gap-2.5 px-5 mb-4">
