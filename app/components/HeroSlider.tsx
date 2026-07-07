@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -32,9 +32,14 @@ const sizeMap: Record<string, string> = {
 
 export default function HeroSlider({ slides }: { slides: Slide[] }) {
   const [current, setCurrent] = useState(0)
+  const touchStartX = useRef(0)
 
   const next = useCallback(() => {
     setCurrent(i => (i + 1) % slides.length)
+  }, [slides.length])
+
+  const prev = useCallback(() => {
+    setCurrent(i => (i - 1 + slides.length) % slides.length)
   }, [slides.length])
 
   useEffect(() => {
@@ -48,7 +53,15 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
   return (
     <div style={{ height: 'clamp(160px, 28vh, 300px)' }}>
       {/* Slides */}
-      <div className="relative w-full h-full overflow-hidden">
+      <div
+        className="relative w-full h-full overflow-hidden"
+        onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
+        onTouchEnd={e => {
+          const diff = touchStartX.current - e.changedTouches[0].clientX
+          if (diff > 50) next()
+          else if (diff < -50) prev()
+        }}
+      >
         {slides.map((slide, i) => (
           <div
             key={i}
