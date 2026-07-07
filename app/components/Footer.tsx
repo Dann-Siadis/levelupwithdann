@@ -45,6 +45,16 @@ export default function Footer() {
                     YouTube
                   </a>
                 </li>
+                <li>
+                  <a href="https://www.tiktok.com/@levelupwithdann" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                    TikTok
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.facebook.com/levelupwithdann" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                    Facebook
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -52,7 +62,7 @@ export default function Footer() {
 
         <div className="border-t border-white/5 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-white/25">
-            © 2026 LevelUpWithDann. Built by{' '}
+            © 2026 Level Up with Dann. Powered by{' '}
             <a href="https://www.siadismedia.com" target="_blank" rel="noopener noreferrer" className="hover:text-white/50 transition">
               Siadis Media
             </a>.
