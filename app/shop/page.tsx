@@ -29,8 +29,7 @@ export default async function ShopPage() {
               title={product.title}
               price={product.price}
               href={product.affiliateLink || `/shop/${product.slug}`}
-              imageUrl={product.mainImage ? urlFor(product.mainImage).width(400).height(350).format('webp').quality(80).url() : undefined}
-              imageContain
+              imageUrl={product.mainImage ? urlFor(product.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url() : undefined}
               className="w-full"
             />
           ))}

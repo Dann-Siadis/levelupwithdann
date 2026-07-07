@@ -65,9 +65,8 @@ export default async function Home() {
     price: p.price,
     href: `/shop/${p.slug}`,
     imageUrl: p.mainImage
-      ? urlFor(p.mainImage).width(400).height(350).format('webp').quality(80).url()
+      ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()
       : undefined,
-    imageContain: true,
   }))
 
   return (
