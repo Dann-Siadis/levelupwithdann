@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'Game Reviews — LevelUpWithDann' }
 export default async function ReviewsPage() {
   const posts = await client.fetch(`
     *[_type == "post" && category == "games"] | order(publishedAt desc){
-      title, "slug": slug.current, rating, mainImage, excerpt
+      title, subtitle, "slug": slug.current, rating, mainImage, excerpt
     }
   `).catch(() => [] as any[])
 
@@ -27,6 +27,7 @@ export default async function ReviewsPage() {
             <ReviewCard
               key={post.slug}
               title={post.title}
+              subtitle={post.subtitle}
               href={`/reviews/${post.slug}`}
               imageUrl={post.mainImage ? urlFor(post.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url() : undefined}
               rating={post.rating}

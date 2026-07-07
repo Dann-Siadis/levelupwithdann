@@ -25,6 +25,12 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: 'subtitle',
+      type: 'string',
+      title: 'Subtitle',
+      description: 'Short line below the title on cards',
+    }),
+    defineField({
       name: 'description',
       type: 'text',
       title: 'Description',

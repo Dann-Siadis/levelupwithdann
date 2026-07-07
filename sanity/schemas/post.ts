@@ -34,6 +34,12 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'subtitle',
+      type: 'string',
+      title: 'Subtitle',
+      description: 'Short line below the title on cards and detail page',
+    }),
+    defineField({
       name: 'rating',
       type: 'number',
       title: 'Score (0–10)',

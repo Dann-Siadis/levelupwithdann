@@ -29,10 +29,10 @@ export default async function Home() {
       "imageUrl": image.asset->url, ctaText, ctaLink, textLines
     }`).catch(() => null),
     client.fetch(`*[_type == "post"] | order(publishedAt desc){
-      title, "slug": slug.current, category, rating, mainImage
+      title, subtitle, "slug": slug.current, category, rating, mainImage
     }`).catch(() => [] as any[]),
     client.fetch(`*[_type == "product"] | order(_createdAt desc){
-      title, "slug": slug.current, mainImage
+      title, subtitle, "slug": slug.current, mainImage
     }`).catch(() => [] as any[]),
     client.fetch(`*[_type == "affiliateBanner" && active == true][0]{
       "imageUrl": image.asset->url, textLines, ctaText, ctaLink
@@ -45,6 +45,7 @@ export default async function Home() {
     return {
       cards: visible.map(p => ({
         title: p.title,
+        subtitle: p.subtitle,
         href: `${basePath}/${p.slug}`,
         imageUrl: p.mainImage
           ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()
@@ -57,6 +58,7 @@ export default async function Home() {
 
   const shopCards = (products as any[]).slice(0, 6).map(p => ({
     title: p.title,
+    subtitle: p.subtitle,
     href: `/shop/${p.slug}`,
     imageUrl: p.mainImage
       ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()

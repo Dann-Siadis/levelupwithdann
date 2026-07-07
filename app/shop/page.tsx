@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'Shop — LevelUpWithDann' }
 export default async function ShopPage() {
   const products = await client.fetch(`
     *[_type == "product"] | order(_createdAt desc){
-      title, "slug": slug.current, mainImage, price, description, affiliateLink
+      title, subtitle, "slug": slug.current, mainImage, price, description, affiliateLink
     }
   `).catch(() => [] as any[])
 
@@ -27,6 +27,7 @@ export default async function ShopPage() {
             <ReviewCard
               key={product.slug}
               title={product.title}
+              subtitle={product.subtitle}
               href={product.affiliateLink || `/shop/${product.slug}`}
               imageUrl={product.mainImage ? urlFor(product.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url() : undefined}
               className="w-full"
