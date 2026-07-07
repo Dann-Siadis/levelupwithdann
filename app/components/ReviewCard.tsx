@@ -4,9 +4,11 @@ import Image from 'next/image'
 interface ReviewCardProps {
   title: string
   subtitle?: string
+  price?: string
   href: string
   imageUrl?: string
   rating?: number // 0–10
+  imageContain?: boolean
   className?: string
 }
 
@@ -22,7 +24,7 @@ function ScoreBadge({ score }: { score: number }) {
   )
 }
 
-export default function ReviewCard({ title, subtitle, href, imageUrl, rating, className }: ReviewCardProps) {
+export default function ReviewCard({ title, subtitle, price, href, imageUrl, rating, imageContain, className }: ReviewCardProps) {
   return (
     <Link
       href={href}
@@ -43,8 +45,8 @@ export default function ReviewCard({ title, subtitle, href, imageUrl, rating, cl
             alt={title}
             fill
             sizes="192px"
-            style={{ objectFit: 'cover' }}
-            className="group-hover:scale-105 transition duration-500"
+            style={{ objectFit: imageContain ? 'contain' : 'cover', padding: imageContain ? '8px' : 0 }}
+            className={imageContain ? '' : 'group-hover:scale-105 transition duration-500'}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-white/10 text-5xl">🎮</div>
@@ -56,9 +58,11 @@ export default function ReviewCard({ title, subtitle, href, imageUrl, rating, cl
       <div className="flex items-center gap-2 px-3 py-2 flex-1">
         <div className="flex-1 min-w-0">
           <p className="text-xs font-semibold text-white leading-tight line-clamp-1">{title}</p>
-          {subtitle && (
+          {price ? (
+            <p className="text-[10px] text-white/40 leading-tight line-clamp-1 mt-0.5">{price}</p>
+          ) : subtitle ? (
             <p className="text-[10px] text-white/40 leading-tight line-clamp-1 mt-0.5">{subtitle}</p>
-          )}
+          ) : null}
         </div>
         <div className="shrink-0 w-7 h-7 rounded-full bg-[#e53935] flex items-center justify-center group-hover:bg-[#c62828] transition">
           <svg width="12" height="12" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

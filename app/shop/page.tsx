@@ -27,9 +27,10 @@ export default async function ShopPage() {
             <ReviewCard
               key={product.slug}
               title={product.title}
-              subtitle={product.subtitle}
+              price={product.price}
               href={product.affiliateLink || `/shop/${product.slug}`}
-              imageUrl={product.mainImage ? urlFor(product.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url() : undefined}
+              imageUrl={product.mainImage ? urlFor(product.mainImage).width(400).height(350).format('webp').quality(80).url() : undefined}
+              imageContain
               className="w-full"
             />
           ))}

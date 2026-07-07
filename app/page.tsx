@@ -33,7 +33,7 @@ export default async function Home() {
       title, subtitle, "slug": slug.current, category, rating, mainImage
     }`).catch(() => [] as any[]),
     client.fetch(`*[_type == "product"] | order(_createdAt desc){
-      title, subtitle, "slug": slug.current, mainImage
+      title, "slug": slug.current, mainImage, price
     }`).catch(() => [] as any[]),
     client.fetch(`*[_type == "affiliateBanner" && active == true][0]{
       slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
@@ -62,11 +62,12 @@ export default async function Home() {
 
   const shopCards = (products as any[]).slice(0, 6).map(p => ({
     title: p.title,
-    subtitle: p.subtitle,
+    price: p.price,
     href: `/shop/${p.slug}`,
     imageUrl: p.mainImage
-      ? urlFor(p.mainImage).width(400).height(350).fit('crop').format('webp').quality(80).url()
+      ? urlFor(p.mainImage).width(400).height(350).format('webp').quality(80).url()
       : undefined,
+    imageContain: true,
   }))
 
   return (
