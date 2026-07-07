@@ -27,7 +27,7 @@ export default function ShopBanner({ imageUrl, heading, subtext, ctaText, ctaLin
   }, [])
 
   return (
-    <div className="px-5 pb-8">
+    <div className="px-5">
       <div
         ref={ref}
         className={`opacity-0 flex overflow-hidden rounded-2xl ${visible ? 'animate-bounce-in' : ''}`}

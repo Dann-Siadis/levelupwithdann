@@ -75,7 +75,7 @@ export default async function Home() {
       <HeroSlider slides={hero?.slides ?? []} />
 
       {/* Category sections */}
-      <div className="py-8 space-y-10">
+      <div className="pt-8 pb-4 space-y-10">
         {SECTIONS.map((section, idx) => {
           const { cards, total } = buildCards(section.key, section.href)
           return (
