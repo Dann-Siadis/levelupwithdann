@@ -54,13 +54,20 @@ export default defineType({
     defineField({
       name: 'excerpt',
       type: 'text',
-      title: 'Excerpt',
-      rows: 3,
+      title: 'Excerpt (SEO)',
+      description: 'Leave empty to auto-generate from body. Max 160 characters for best SEO.',
+      rows: 2,
     }),
     defineField({
       name: 'body',
       type: 'array',
-      title: 'Body',
+      title: 'Content (first section)',
+      of: [{ type: 'block' }, { type: 'image', options: { hotspot: true } }],
+    }),
+    defineField({
+      name: 'body2',
+      type: 'array',
+      title: 'Content (second section — below affiliate banner)',
       of: [{ type: 'block' }, { type: 'image', options: { hotspot: true } }],
     }),
     defineField({
@@ -71,7 +78,15 @@ export default defineType({
     defineField({
       name: 'affiliateLink',
       type: 'url',
-      title: 'Affiliate Link',
+      title: 'Affiliate Link (buy button)',
+    }),
+    defineField({
+      name: 'recommendedPosts',
+      type: 'array',
+      title: 'Aanbevolen artikelen',
+      description: 'Kies minimaal 2 artikelen om onderaan te tonen',
+      of: [{ type: 'reference', to: [{ type: 'post' }] }],
+      validation: Rule => Rule.max(6),
     }),
   ],
   preview: {

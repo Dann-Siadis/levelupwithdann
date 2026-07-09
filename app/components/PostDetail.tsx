@@ -1,6 +1,19 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
+import { client, urlFor } from '@/lib/sanity'
+import AffiliateBanner from './AffiliateBanner'
+import ShopBanner from './ShopBanner'
+import ReviewCard from './ReviewCard'
+
+interface RecommendedPost {
+  title: string
+  subtitle?: string
+  rating?: number
+  slug: string
+  category: string
+  imageUrl?: string
+}
 
 interface PostDetailProps {
   title: string
@@ -8,29 +21,44 @@ interface PostDetailProps {
   rating?: number
   imageUrl?: string
   body?: any[]
-  excerpt?: string
+  body2?: any[]
   publishedAt?: string
   affiliateLink?: string
+  recommendedPosts?: RecommendedPost[]
   backHref: string
   backLabel: string
+}
+
+const categoryPath: Record<string, string> = {
+  games: '/reviews',
+  tvshows: '/tvshows',
+  gear: '/gear',
+  gaming: '/blogs',
+  kickboxing: '/kickboxing',
 }
 
 function ScoreBadge({ score }: { score: number }) {
   const bg = score >= 8 ? '#22c55e' : score >= 6 ? '#f97316' : '#ef4444'
   return (
-    <span
-      className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-bold text-white shadow"
-      style={{ background: bg }}
-    >
+    <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-bold text-white shadow" style={{ background: bg }}>
       {score}
     </span>
   )
 }
 
-export default function PostDetail({
-  title, subtitle, rating, imageUrl, body, excerpt,
-  publishedAt, affiliateLink, backHref, backLabel,
+export default async function PostDetail({
+  title, subtitle, rating, imageUrl, body, body2,
+  publishedAt, affiliateLink, recommendedPosts, backHref, backLabel,
 }: PostDetailProps) {
+  const [affiliateBannerData, shopBannerData] = await Promise.all([
+    client.fetch(`*[_type == "affiliateBanner" && active == true][0]{
+      slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
+    }`).catch(() => null),
+    client.fetch(`*[_type == "shopBanner" && active == true][0]{
+      "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink
+    }`).catch(() => null),
+  ])
+
   return (
     <div className="max-w-2xl mx-auto px-5 pb-16">
       {/* Back link */}
@@ -76,15 +104,61 @@ export default function PostDetail({
         </a>
       )}
 
-      {/* Body */}
-      {body && body.length > 0 ? (
-        <div className="prose prose-invert prose-sm max-w-none text-white/70 leading-relaxed">
+      {/* Body 1 */}
+      {body && body.length > 0 && (
+        <div className="prose prose-invert prose-sm max-w-none text-white/70 leading-relaxed mb-10">
           <PortableText value={body} />
         </div>
-      ) : excerpt ? (
-        <p className="text-white/60 text-sm leading-relaxed">{excerpt}</p>
-      ) : (
-        <p className="text-white/20 text-sm text-center py-10">Content coming soon.</p>
+      )}
+
+      {/* Affiliate banner slider */}
+      {affiliateBannerData?.slides?.length > 0 && (
+        <div className="mb-10 -mx-5">
+          <AffiliateBanner slides={affiliateBannerData.slides} />
+        </div>
+      )}
+
+      {/* Body 2 */}
+      {body2 && body2.length > 0 && (
+        <div className="prose prose-invert prose-sm max-w-none text-white/70 leading-relaxed mb-10">
+          <PortableText value={body2} />
+        </div>
+      )}
+
+      {/* Shop banner */}
+      {shopBannerData && (
+        <div className="-mx-5 mb-10">
+          <ShopBanner
+            imageUrl={shopBannerData.imageUrl}
+            heading={shopBannerData.heading}
+            subtext={shopBannerData.subtext}
+            ctaText={shopBannerData.ctaText}
+            ctaLink={shopBannerData.ctaLink}
+          />
+        </div>
+      )}
+
+      {/* Recommended articles */}
+      {recommendedPosts && recommendedPosts.length > 0 && (
+        <div>
+          <h2 className="text-sm font-bold text-white/50 uppercase tracking-widest mb-4">Aanbevolen</h2>
+          <div className="grid grid-cols-2 gap-3">
+            {recommendedPosts.map(post => {
+              const basePath = categoryPath[post.category] ?? '/reviews'
+              return (
+                <ReviewCard
+                  key={post.slug}
+                  title={post.title}
+                  subtitle={post.subtitle}
+                  rating={post.rating}
+                  href={`${basePath}/${post.slug}`}
+                  imageUrl={post.imageUrl}
+                  className="w-full"
+                />
+              )
+            })}
+          </div>
+        </div>
       )}
     </div>
   )
