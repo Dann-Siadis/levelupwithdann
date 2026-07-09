@@ -57,6 +57,7 @@ export default async function KickboxingDetailPage({ params }: { params: Promise
       recommendedPosts={post.recommendedPosts}
       backHref="/kickboxing"
       backLabel="Kickboxing"
+      category="kickboxing"
     />
   )
 }

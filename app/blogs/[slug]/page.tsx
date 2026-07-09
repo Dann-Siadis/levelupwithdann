@@ -57,6 +57,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       recommendedPosts={post.recommendedPosts}
       backHref="/blogs"
       backLabel="Gaming Blogs"
+      category="gaming"
     />
   )
 }

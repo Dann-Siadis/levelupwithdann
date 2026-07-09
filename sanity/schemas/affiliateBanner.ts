@@ -53,6 +53,14 @@ const textLinesField = defineField({
   ],
 })
 
+const CATEGORY_OPTIONS = [
+  { title: 'Game Reviews', value: 'games' },
+  { title: 'Tech & Gear', value: 'gear' },
+  { title: 'Gaming Blogs', value: 'gaming' },
+  { title: 'Movie & TV Reviews', value: 'tvshows' },
+  { title: 'Kickboxing', value: 'kickboxing' },
+]
+
 export default defineType({
   name: 'affiliateBanner',
   title: 'Affiliate Banner',
@@ -62,8 +70,16 @@ export default defineType({
       name: 'active',
       type: 'boolean',
       title: 'Active',
-      description: 'Toggle to show/hide this banner on the homepage',
+      description: 'Toggle to show/hide this banner',
       initialValue: true,
+    }),
+    defineField({
+      name: 'categories',
+      type: 'array',
+      title: 'Categorieën',
+      description: 'Laat leeg = algemene fallback (zichtbaar op homepage en overal waar geen specifieke banner is). Vink categorieën aan om deze banner alleen voor die categorieën te tonen op de postdetailpagina.',
+      of: [{ type: 'string' }],
+      options: { list: CATEGORY_OPTIONS, layout: 'grid' },
     }),
     defineField({
       name: 'slides',
@@ -97,9 +113,16 @@ export default defineType({
     }),
   ],
   preview: {
-    select: { media: 'slides.0.image' },
-    prepare({ media }) {
-      return { title: 'Affiliate Banner', media }
+    select: { categories: 'categories', media: 'slides.0.image', active: 'active' },
+    prepare({ categories, media, active }) {
+      const label = categories?.length
+        ? categories.join(', ')
+        : 'Algemeen (fallback)'
+      return {
+        title: `Affiliate Banner — ${label}`,
+        subtitle: active ? 'Actief' : 'Inactief',
+        media,
+      }
     },
   },
 })

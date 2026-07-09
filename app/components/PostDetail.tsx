@@ -71,6 +71,7 @@ interface PostDetailProps {
   recommendedPosts?: RecommendedPost[]
   backHref: string
   backLabel: string
+  category?: string
 }
 
 const categoryPath: Record<string, string> = {
@@ -92,15 +93,26 @@ function ScoreBadge({ score }: { score: number }) {
 
 export default async function PostDetail({
   title, subtitle, rating, imageUrl, body, body2,
-  publishedAt, affiliateLink, recommendedPosts, backHref, backLabel,
+  publishedAt, affiliateLink, recommendedPosts, backHref, backLabel, category,
 }: PostDetailProps) {
+  // Fetch the most specific matching banner: category-specific first, general fallback second
+  const bannerQuery = (type: string, projection: string) => `
+    *[_type == "${type}" && active == true && (
+      ($cat != "" && $cat in categories) ||
+      (!defined(categories) || count(categories) == 0)
+    )] | order(count(categories) desc)[0]{ ${projection} }
+  `
+  const cat = category ?? ''
+
   const [affiliateBannerData, shopBannerData] = await Promise.all([
-    client.fetch(`*[_type == "affiliateBanner" && active == true][0]{
-      slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
-    }`).catch(() => null),
-    client.fetch(`*[_type == "shopBanner" && active == true][0]{
-      "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink
-    }`).catch(() => null),
+    client.fetch(
+      bannerQuery('affiliateBanner', 'slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }'),
+      { cat }
+    ).catch(() => null),
+    client.fetch(
+      bannerQuery('shopBanner', '"imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink'),
+      { cat }
+    ).catch(() => null),
   ])
 
   return (

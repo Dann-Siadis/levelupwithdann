@@ -57,6 +57,7 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
       recommendedPosts={post.recommendedPosts}
       backHref="/reviews"
       backLabel="Game Reviews"
+      category="games"
     />
   )
 }

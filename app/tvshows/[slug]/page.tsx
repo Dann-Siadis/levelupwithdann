@@ -57,6 +57,7 @@ export default async function TVShowDetailPage({ params }: { params: Promise<{ s
       recommendedPosts={post.recommendedPosts}
       backHref="/tvshows"
       backLabel="Movie & TV Reviews"
+      category="tvshows"
     />
   )
 }

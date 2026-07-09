@@ -57,6 +57,7 @@ export default async function GearDetailPage({ params }: { params: Promise<{ slu
       recommendedPosts={post.recommendedPosts}
       backHref="/gear"
       backLabel="Tech & Gear"
+      category="gear"
     />
   )
 }
