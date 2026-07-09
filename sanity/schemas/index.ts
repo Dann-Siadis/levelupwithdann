@@ -5,5 +5,6 @@ import about from './about'
 import affiliateBanner from './affiliateBanner'
 import shopBanner from './shopBanner'
 import gameAffiliateCard from './gameAffiliateCard'
+import homepageSettings from './homepageSettings'
 
-export const schemaTypes = [post, product, heroSettings, about, affiliateBanner, shopBanner, gameAffiliateCard]
+export const schemaTypes = [post, product, heroSettings, about, affiliateBanner, shopBanner, gameAffiliateCard, homepageSettings]

@@ -26,16 +26,30 @@ const SECTIONS = [
 ]
 
 export default async function Home() {
-  const [hero, posts, products, banner, shopBannerData, gameAffiliate] = await Promise.all([
+  const [hero, homepage, banner, shopBannerData, gameAffiliate] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
       slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
-    client.fetch(`*[_type == "post"] | order(publishedAt desc){
-      title, subtitle, "slug": slug.current, category, rating, mainImage
-    }`).catch(() => [] as any[]),
-    client.fetch(`*[_type == "product"] | order(_createdAt desc){
-      title, "slug": slug.current, mainImage, price
-    }`).catch(() => [] as any[]),
+    client.fetch(`*[_type == "homepageSettings"][0]{
+      "gameReviews": gameReviews[]->{
+        title, subtitle, rating, "slug": slug.current, mainImage
+      },
+      "techGear": techGear[]->{
+        title, subtitle, rating, "slug": slug.current, mainImage
+      },
+      "gamingBlogs": gamingBlogs[]->{
+        title, subtitle, rating, "slug": slug.current, mainImage
+      },
+      "movieTV": movieTV[]->{
+        title, subtitle, rating, "slug": slug.current, mainImage
+      },
+      "kickboxing": kickboxing[]->{
+        title, subtitle, rating, "slug": slug.current, mainImage
+      },
+      "shop": shop[]->{
+        title, "slug": slug.current, mainImage, price
+      }
+    }`).catch(() => null),
     client.fetch(`*[_type == "affiliateBanner" && active == true][0]{
       slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
@@ -47,11 +61,18 @@ export default async function Home() {
     }`).catch(() => null),
   ])
 
+  const homepageKey: Record<string, string> = {
+    games: 'gameReviews',
+    gear: 'techGear',
+    gaming: 'gamingBlogs',
+    tvshows: 'movieTV',
+    kickboxing: 'kickboxing',
+  }
+
   function buildCards(category: string, basePath: string) {
-    const all = (posts as any[]).filter(p => p.category === category)
-    const visible = all.slice(0, 6)
+    const raw: any[] = homepage?.[homepageKey[category]] ?? []
     return {
-      cards: visible.map(p => ({
+      cards: raw.map(p => ({
         title: p.title,
         subtitle: p.subtitle,
         href: `${basePath}/${p.slug}`,
@@ -60,11 +81,11 @@ export default async function Home() {
           : undefined,
         rating: p.rating ?? undefined,
       })),
-      total: all.length,
+      total: raw.length,
     }
   }
 
-  const shopCards = (products as any[]).slice(0, 6).map(p => ({
+  const shopCards = (homepage?.shop ?? []).map((p: any) => ({
     title: p.title,
     price: p.price,
     href: `/shop/${p.slug}`,
@@ -128,7 +149,7 @@ export default async function Home() {
         <section>
           <div className="flex items-center gap-2.5 px-5 mb-4">
             <h2 className="text-base font-bold text-white tracking-tight">Shop</h2>
-            {products.length > 0 && (
+            {shopCards.length > 0 && (
               <Link href="/shop" className="ml-auto text-xs text-white/25 hover:text-white/60 transition">
                 See all →
               </Link>
@@ -137,8 +158,8 @@ export default async function Home() {
           <div className="pl-5">
             {shopCards.length > 0 ? (
               <SwipeCarousel>
-                {shopCards.map((card, i) => <ReviewCard key={i} {...card} />)}
-                <SeeAllCard href="/shop" total={(products as any[]).length} label="See all Products" />
+                {shopCards.map((card: any, i: number) => <ReviewCard key={i} {...card} />)}
+                <SeeAllCard href="/shop" total={shopCards.length} label="See all Products" />
                 <div className="shrink-0 w-3" />
               </SwipeCarousel>
             ) : (
