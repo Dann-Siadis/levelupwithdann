@@ -51,7 +51,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
   if (!slides.length) return null
 
   return (
-    <div style={{ height: 'clamp(160px, 28vh, 300px)' }}>
+    <div className="h-[210px] md:h-[460px] lg:h-[520px]">
       {/* Slides */}
       <div
         className="relative w-full h-full overflow-hidden"

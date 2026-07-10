@@ -28,9 +28,9 @@ export default function SwipeCarousel({ children }: { children: ReactNode }) {
       >
         {children}
       </div>
-      {/* Swipe hint gradient — mobile only */}
+      {/* Swipe hint gradient */}
       <div
-        className="md:hidden absolute inset-y-0 right-0 w-16 pointer-events-none"
+        className="absolute inset-y-0 right-0 w-16 pointer-events-none"
         style={{ background: 'linear-gradient(to right, transparent, #0d0f1a)' }}
       />
     </div>
