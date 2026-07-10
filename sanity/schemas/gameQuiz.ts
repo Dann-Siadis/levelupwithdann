@@ -92,6 +92,21 @@ export default defineType({
       description: 'Bv. "SALE", "TOP PICK", "AANBIEDING"',
     }),
     defineField({
+      name: 'flipBadgeColor',
+      type: 'string',
+      title: 'Flip — Badge kleur',
+      initialValue: 'red',
+      options: {
+        list: [
+          { title: 'Rood', value: 'red' },
+          { title: 'Groen', value: 'green' },
+          { title: 'Oranje', value: 'orange' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+    }),
+    defineField({
       name: 'flipTitle',
       type: 'string',
       title: 'Flip — Titel',

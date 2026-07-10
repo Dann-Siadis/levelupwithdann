@@ -65,7 +65,7 @@ export default async function Home() {
       title, subtitle,
       questions[]{ question, answers[]{ text, correct } },
       "flipImageUrl": flipImage.asset->url,
-      flipBadge, flipTitle, flipSubtext, flipCtaText, flipCtaLink
+      flipBadge, flipBadgeColor, flipTitle, flipSubtext, flipCtaText, flipCtaLink
     }`).catch(() => null),
   ])
 
@@ -185,6 +185,7 @@ export default async function Home() {
               questions={quizData.questions}
               flipImageUrl={quizData.flipImageUrl}
               flipBadge={quizData.flipBadge}
+              flipBadgeColor={quizData.flipBadgeColor}
               flipTitle={quizData.flipTitle}
               flipSubtext={quizData.flipSubtext}
               flipCtaText={quizData.flipCtaText}

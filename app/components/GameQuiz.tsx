@@ -11,6 +11,7 @@ interface GameQuizProps {
   questions: Question[]
   flipImageUrl?: string
   flipBadge?: string
+  flipBadgeColor?: string
   flipTitle?: string
   flipSubtext?: string
   flipCtaText?: string
@@ -19,7 +20,7 @@ interface GameQuizProps {
 
 export default function GameQuiz({
   title = 'Gaming Quiz', subtitle, questions,
-  flipImageUrl, flipBadge, flipTitle, flipSubtext, flipCtaText, flipCtaLink,
+  flipImageUrl, flipBadge, flipBadgeColor = 'red', flipTitle, flipSubtext, flipCtaText, flipCtaLink,
 }: GameQuizProps) {
   const [currentQ, setCurrentQ] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
@@ -163,7 +164,12 @@ export default function GameQuiz({
             />
             <div className="absolute inset-0 flex flex-col justify-end p-5 gap-2.5">
               {flipBadge && (
-                <span className="self-start bg-[#e53935] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-widest uppercase">
+                <span
+                  className="self-start text-white text-[10px] font-extrabold px-2.5 py-1 rounded-md tracking-widest uppercase"
+                  style={{
+                    background: flipBadgeColor === 'green' ? '#22c55e' : flipBadgeColor === 'orange' ? '#f97316' : '#e53935',
+                  }}
+                >
                   {flipBadge}
                 </span>
               )}
