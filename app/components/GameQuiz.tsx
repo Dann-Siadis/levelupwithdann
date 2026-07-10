@@ -75,17 +75,18 @@ export default function GameQuiz({
   }
 
   return (
-    <div className="flex flex-col items-center gap-3 px-5">
-      <div style={{ perspective: '1200px' }} className="w-full max-w-xs">
+    <div className="px-5">
+      <div style={{ perspective: '1200px' }} className="w-full">
         <div
+          className="relative"
           style={{
             transformStyle: 'preserve-3d',
             transition: 'transform 0.75s cubic-bezier(0.4, 0, 0.2, 1)',
             transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-            position: 'relative',
-            aspectRatio: '4/5',
           }}
         >
+          {/* portrait on mobile, fixed-height landscape on desktop */}
+          <div className="aspect-[4/5] md:aspect-auto md:h-[320px] max-w-xs mx-auto md:max-w-none relative">
           {/* ── FRONT — quiz ── */}
           <div
             className="absolute inset-0 rounded-2xl overflow-hidden flex flex-col"
@@ -238,8 +239,9 @@ export default function GameQuiz({
               </button>
             </div>
           </div>
-        </div>
-      </div>
+          </div>{/* closes aspect/height wrapper */}
+        </div>{/* closes rotatable inner */}
+      </div>{/* closes perspective */}
     </div>
   )
 }
