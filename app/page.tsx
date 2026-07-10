@@ -7,6 +7,7 @@ import AffiliateBanner from './components/AffiliateBanner'
 import HeroSlider from './components/HeroSlider'
 import ShopBanner from './components/ShopBanner'
 import AffiliateCard from './components/AffiliateCard'
+import GameQuiz from './components/GameQuiz'
 import type { Metadata } from 'next'
 
 export const revalidate = 60
@@ -26,7 +27,7 @@ const SECTIONS = [
 ]
 
 export default async function Home() {
-  const [hero, homepage, banner, shopBannerData, gameAffiliate] = await Promise.all([
+  const [hero, homepage, banner, shopBannerData, gameAffiliate, quizData] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
       slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
@@ -59,6 +60,12 @@ export default async function Home() {
     }`).catch(() => null),
     client.fetch(`*[_type == "gameAffiliateCard" && active == true][0]{
       title, affiliateLink, "imageUrl": image.asset->url
+    }`).catch(() => null),
+    client.fetch(`*[_type == "gameQuiz" && active == true][0]{
+      title, subtitle,
+      questions[]{ question, answers[]{ text, correct } },
+      "flipImageUrl": flipImage.asset->url,
+      flipBadge, flipTitle, flipSubtext, flipCtaText, flipCtaLink
     }`).catch(() => null),
   ])
 
@@ -168,6 +175,23 @@ export default async function Home() {
             )}
           </div>
         </section>
+
+        {/* Game Quiz */}
+        {quizData?.questions?.length > 0 && (
+          <section>
+            <GameQuiz
+              title={quizData.title}
+              subtitle={quizData.subtitle}
+              questions={quizData.questions}
+              flipImageUrl={quizData.flipImageUrl}
+              flipBadge={quizData.flipBadge}
+              flipTitle={quizData.flipTitle}
+              flipSubtext={quizData.flipSubtext}
+              flipCtaText={quizData.flipCtaText}
+              flipCtaLink={quizData.flipCtaLink}
+            />
+          </section>
+        )}
 
         {/* Shop Banner */}
         {shopBannerData && (
