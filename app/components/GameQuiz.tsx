@@ -79,7 +79,8 @@ export default function GameQuiz({
             {/* Header */}
             <div className="px-5 pt-5 pb-3 border-b border-white/5">
               <div className="flex items-center gap-2">
-                <Image src="/quizmascot.png" alt="Quiz mascot" width={26} height={26} className="object-contain" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/quizmascot.png" alt="" width={24} height={24} style={{ width: 24, height: 24, objectFit: 'contain' }} />
                 <h3 className="text-sm font-extrabold text-white tracking-tight uppercase">{title}</h3>
               </div>
               {subtitle && <p className="text-xs text-white/30 mt-0.5">{subtitle}</p>}
