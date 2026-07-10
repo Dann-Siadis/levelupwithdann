@@ -64,7 +64,7 @@ export default function Footer() {
           <div className="flex flex-col gap-5">
             <Image src="/lwdlogo.png" alt="LevelUpWithDann" width={64} height={48} className="object-contain" />
             <p className="text-sm text-white/40 leading-relaxed max-w-[260px]">
-              Honest game reviews, gear picks, and kickboxing content. No hype, just real takes.
+              Games, movies, tech, and kickboxing—all in one place. Honest reviews, gear picks, and real takes.
             </p>
             <div className="flex gap-4">
               {socials.map(s => (
