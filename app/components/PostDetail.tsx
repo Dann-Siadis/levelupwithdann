@@ -110,7 +110,7 @@ export default async function PostDetail({
       { cat }
     ).catch(() => null),
     client.fetch(
-      bannerQuery('shopBanner', '"imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink'),
+      bannerQuery('shopBanner', '"imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink, "imageUrl2": image2.asset->url, heading2, subtext2, ctaText2, ctaLink2'),
       { cat }
     ).catch(() => null),
   ])
@@ -190,6 +190,11 @@ export default async function PostDetail({
             subtext={shopBannerData.subtext}
             ctaText={shopBannerData.ctaText}
             ctaLink={shopBannerData.ctaLink}
+            imageUrl2={shopBannerData.imageUrl2}
+            heading2={shopBannerData.heading2}
+            subtext2={shopBannerData.subtext2}
+            ctaText2={shopBannerData.ctaText2}
+            ctaLink2={shopBannerData.ctaLink2}
           />
         </div>
       )}

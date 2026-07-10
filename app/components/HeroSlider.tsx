@@ -75,35 +75,38 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             )}
             <div className="absolute inset-0 bg-black/25" />
 
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-center">
-              {slide.textLines && slide.textLines.length > 0 && (
-                <div className="flex flex-col items-center gap-0.5">
-                  {slide.textLines.map((line, j) => (
-                    <span
-                      key={j}
-                      style={{
-                        color: colorMap[line.color] ?? '#ffffff',
-                        fontSize: sizeMap[line.size] ?? '1.125rem',
-                        fontWeight: line.bold ? 700 : 400,
-                        textShadow: '0 1px 6px rgba(0,0,0,0.7)',
-                      }}
-                    >
-                      {line.text}
-                    </span>
-                  ))}
-                </div>
-              )}
-              {slide.ctaText && slide.ctaLink && (
-                <Link
-                  href={slide.ctaLink}
-                  className="inline-flex items-center gap-1.5 bg-[#e53935] hover:bg-[#c62828] text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow-lg whitespace-nowrap"
-                >
-                  {slide.ctaText}
-                  <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 6h8M6 2l4 4-4 4" />
-                  </svg>
-                </Link>
-              )}
+            {/* Content — bottom on mobile, centered on desktop */}
+            <div className="absolute inset-0 flex flex-col items-center justify-end pb-7 md:justify-center md:pb-0 px-4 text-center">
+              <div className="flex flex-col items-center gap-2 md:gap-3 md:scale-[1.45] md:origin-center">
+                {slide.textLines && slide.textLines.length > 0 && (
+                  <div className="flex flex-col items-center gap-0.5 md:gap-1">
+                    {slide.textLines.map((line, j) => (
+                      <span
+                        key={j}
+                        style={{
+                          color: colorMap[line.color] ?? '#ffffff',
+                          fontSize: sizeMap[line.size] ?? '1.125rem',
+                          fontWeight: line.bold ? 700 : 400,
+                          textShadow: '0 2px 10px rgba(0,0,0,0.8)',
+                        }}
+                      >
+                        {line.text}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {slide.ctaText && slide.ctaLink && (
+                  <Link
+                    href={slide.ctaLink}
+                    className="inline-flex items-center gap-1.5 bg-[#e53935] hover:bg-[#c62828] text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow-lg whitespace-nowrap"
+                  >
+                    {slide.ctaText}
+                    <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M2 6h8M6 2l4 4-4 4" />
+                    </svg>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         ))}

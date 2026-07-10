@@ -54,7 +54,8 @@ export default async function Home() {
       slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
     client.fetch(`*[_type == "shopBanner" && active == true][0]{
-      "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink
+      "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink,
+      "imageUrl2": image2.asset->url, heading2, subtext2, ctaText2, ctaLink2
     }`).catch(() => null),
     client.fetch(`*[_type == "gameAffiliateCard" && active == true][0]{
       title, affiliateLink, "imageUrl": image.asset->url
@@ -176,6 +177,11 @@ export default async function Home() {
             subtext={shopBannerData.subtext}
             ctaText={shopBannerData.ctaText}
             ctaLink={shopBannerData.ctaLink}
+            imageUrl2={shopBannerData.imageUrl2}
+            heading2={shopBannerData.heading2}
+            subtext2={shopBannerData.subtext2}
+            ctaText2={shopBannerData.ctaText2}
+            ctaLink2={shopBannerData.ctaLink2}
           />
         )}
       </div>

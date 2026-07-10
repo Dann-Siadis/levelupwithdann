@@ -65,8 +65,7 @@ export default function AffiliateBanner({ slides }: { slides: Slide[] }) {
       >
         {/* Slider */}
         <div
-          className="relative overflow-hidden rounded-2xl"
-          style={{ height: 'clamp(80px, 14vh, 150px)' }}
+          className="relative overflow-hidden rounded-2xl h-[130px] md:h-[280px]"
           onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
           onTouchEnd={e => {
             const diff = touchStartX.current - e.changedTouches[0].clientX
