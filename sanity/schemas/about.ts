@@ -37,6 +37,49 @@ export default defineType({
       of: [{ type: 'string' }],
     }),
     defineField({
+      name: 'skills',
+      type: 'array',
+      title: 'Skill bars',
+      description: 'Horizontal bars on the About page. Each row = a label + a percentage (0–100).',
+      of: [
+        {
+          type: 'object',
+          name: 'skill',
+          fields: [
+            defineField({
+              name: 'label',
+              type: 'string',
+              title: 'Label',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'value',
+              type: 'number',
+              title: 'Percentage (0–100)',
+              validation: (Rule) => Rule.required().min(0).max(100),
+            }),
+          ],
+          preview: {
+            select: { title: 'label', subtitle: 'value' },
+            prepare({ title, subtitle }) {
+              return {
+                title: title || 'Skill',
+                subtitle: subtitle != null ? `${subtitle}%` : '',
+              }
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'affiliateBanner',
+      type: 'reference',
+      title: 'Affiliate banner (bottom of About page)',
+      description:
+        'Which Affiliate Banner shows at the bottom of the About page. Leave empty to use the general fallback banner.',
+      to: [{ type: 'affiliateBanner' }],
+    }),
+    defineField({
       name: 'socialLinks',
       type: 'object',
       title: 'Social Links',
