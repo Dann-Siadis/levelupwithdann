@@ -33,7 +33,7 @@ export default async function AboutPage() {
       }`)
       .catch(() => null),
     client
-      .fetch(`*[_type == "post" && defined(slug.current)] | order(publishedAt desc)[0...3]{
+      .fetch(`*[_type == "post" && defined(slug.current)] | order(publishedAt desc)[0...4]{
         title, subtitle, rating, category, "slug": slug.current, mainImage
       }`)
       .catch(() => [] as any[]),
@@ -137,11 +137,18 @@ export default async function AboutPage() {
         </div>
       )}
 
+      {/* Affiliate banner */}
+      {banner?.slides?.length > 0 && (
+        <div className="mt-16 -mx-5">
+          <AffiliateBanner slides={banner.slides} />
+        </div>
+      )}
+
       {/* Latest Posts */}
       {latestPosts.length > 0 && (
         <section className="mt-16">
           <h2 className="text-lg font-bold text-white mb-4">Latest Posts</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {(latestPosts as any[]).map((p) => (
               <ReviewCard
                 key={p.slug}
@@ -159,13 +166,6 @@ export default async function AboutPage() {
             ))}
           </div>
         </section>
-      )}
-
-      {/* Affiliate banner */}
-      {banner?.slides?.length > 0 && (
-        <div className="mt-16 -mx-5">
-          <AffiliateBanner slides={banner.slides} />
-        </div>
       )}
     </div>
   )
