@@ -80,6 +80,14 @@ export default defineType({
       to: [{ type: 'affiliateBanner' }],
     }),
     defineField({
+      name: 'popularPosts',
+      type: 'array',
+      title: 'Popular posts',
+      description: 'Hand-pick the posts shown in the "Popular Posts" grid on the About page (up to 4).',
+      of: [{ type: 'reference', to: [{ type: 'post' }] }],
+      validation: (Rule) => Rule.max(4),
+    }),
+    defineField({
       name: 'socialLinks',
       type: 'object',
       title: 'Social Links',

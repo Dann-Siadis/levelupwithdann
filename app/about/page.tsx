@@ -23,21 +23,19 @@ const CATEGORY_PATH: Record<string, string> = {
 const bannerProjection = `"slides": slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }`
 
 export default async function AboutPage() {
-  const [about, latestPosts] = await Promise.all([
-    client
-      .fetch(`*[_type == "about"][0]{
-        heading, subheading, bio, highlights, skills,
-        "photoUrl": photo.asset->url,
-        socialLinks,
-        "banner": affiliateBanner->{ ${bannerProjection} }
-      }`)
-      .catch(() => null),
-    client
-      .fetch(`*[_type == "post" && defined(slug.current)] | order(publishedAt desc)[0...4]{
+  const about = await client
+    .fetch(`*[_type == "about"][0]{
+      heading, subheading, bio, highlights, skills,
+      "photoUrl": photo.asset->url,
+      socialLinks,
+      "banner": affiliateBanner->{ ${bannerProjection} },
+      "popularPosts": popularPosts[]->{
         title, subtitle, rating, category, "slug": slug.current, mainImage
-      }`)
-      .catch(() => [] as any[]),
-  ])
+      }
+    }`)
+    .catch(() => null)
+
+  const popularPosts: any[] = about?.popularPosts ?? []
 
   let banner = about?.banner ?? null
   if (!banner?.slides?.length) {
@@ -144,12 +142,12 @@ export default async function AboutPage() {
         </div>
       )}
 
-      {/* Latest Posts */}
-      {latestPosts.length > 0 && (
+      {/* Popular Posts */}
+      {popularPosts.length > 0 && (
         <section className="mt-16">
-          <h2 className="text-lg font-bold text-white mb-4">Latest Posts</h2>
+          <h2 className="text-lg font-bold text-white mb-4">Popular Posts</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {(latestPosts as any[]).map((p) => (
+            {popularPosts.map((p) => (
               <ReviewCard
                 key={p.slug}
                 title={p.title}
