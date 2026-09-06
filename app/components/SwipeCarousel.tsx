@@ -28,10 +28,10 @@ export default function SwipeCarousel({ children }: { children: ReactNode }) {
       >
         {children}
       </div>
-      {/* Swipe hint gradient */}
+      {/* Swipe hint — soft fade over the peeking next card */}
       <div
-        className="absolute inset-y-0 right-0 w-16 pointer-events-none"
-        style={{ background: 'linear-gradient(to right, transparent, #0d0f1a)' }}
+        className="absolute inset-y-0 right-0 w-20 pointer-events-none"
+        style={{ background: 'linear-gradient(to right, rgba(13,15,26,0), rgba(13,15,26,0.92))' }}
       />
     </div>
   )
