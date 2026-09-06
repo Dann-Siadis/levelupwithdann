@@ -71,17 +71,26 @@ export default function Navbar() {
         </button>
 
         {open && (
-          <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md border border-white/15 rounded-xl shadow-2xl py-1.5 min-w-[180px] text-center z-50">
+          <div
+            className="absolute top-full mt-1 left-1/2 -translate-x-1/2 rounded-xl py-1.5 min-w-[190px] text-center z-50"
+            style={{
+              background: 'rgba(26, 15, 48, 0.85)',
+              border: '1px solid rgba(145, 70, 255, 0.35)',
+              backdropFilter: 'blur(16px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+              boxShadow: '0 8px 40px rgba(145, 70, 255, 0.25)',
+            }}
+          >
             <Link
               href="/"
-              className="block px-6 py-3 text-sm text-white/70 hover:text-white hover:bg-white/5 transition rounded-lg mx-1"
+              className="block px-6 py-3 text-base font-semibold text-white hover:bg-[rgba(145,70,255,0.20)] transition rounded-lg mx-1"
               onClick={() => setOpen(false)}
             >
               Home
             </Link>
             <Link
               href="/about"
-              className="block px-6 py-3 text-sm text-white/70 hover:text-white hover:bg-white/5 transition rounded-lg mx-1"
+              className="block px-6 py-3 text-base font-semibold text-white hover:bg-[rgba(145,70,255,0.20)] transition rounded-lg mx-1"
               onClick={() => setOpen(false)}
             >
               About Dann
