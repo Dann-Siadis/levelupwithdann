@@ -3,6 +3,14 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
+const GLASS = {
+  background: 'rgba(145, 70, 255, 0.10)',
+  borderColor: 'rgba(145, 70, 255, 0.22)',
+  backdropFilter: 'blur(14px) saturate(160%)',
+  WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+  boxShadow: '0 4px 30px rgba(145, 70, 255, 0.12)',
+} as const
+
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -28,27 +36,27 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav
-      className="sticky top-0 z-50 border-b transition-all duration-300"
-      style={
-        scrolled
-          ? {
-              background: 'rgba(145, 70, 255, 0.10)',
-              borderColor: 'rgba(145, 70, 255, 0.22)',
-              backdropFilter: 'blur(14px) saturate(160%)',
-              WebkitBackdropFilter: 'blur(14px) saturate(160%)',
-              boxShadow: '0 4px 30px rgba(145, 70, 255, 0.12)',
-            }
-          : {
-              background: 'transparent',
-              borderColor: 'transparent',
-              backdropFilter: 'none',
-              WebkitBackdropFilter: 'none',
-              boxShadow: 'none',
-            }
-      }
-    >
-      <div className="flex justify-center py-1.5 relative" ref={ref}>
+    <nav className="sticky top-0 z-50">
+      {/* Frosted background layer — kept separate so it does NOT become a
+          backdrop-filter ancestor of the dropdown (nested backdrop-filters
+          are a no-op in Chrome). */}
+      <div
+        aria-hidden
+        className="absolute inset-0 border-b transition-all duration-300"
+        style={
+          scrolled
+            ? GLASS
+            : {
+                background: 'transparent',
+                borderColor: 'transparent',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
+                boxShadow: 'none',
+              }
+        }
+      />
+
+      <div className="relative flex justify-center py-1.5" ref={ref}>
         <button
           onClick={() => setOpen(!open)}
           className="flex flex-col items-center gap-0.5 group"
@@ -72,14 +80,8 @@ export default function Navbar() {
 
         {open && (
           <div
-            className="absolute top-full mt-1 left-1/2 -translate-x-1/2 rounded-xl py-1.5 min-w-[190px] text-center z-50"
-            style={{
-              background: 'rgba(145, 70, 255, 0.10)',
-              border: '1px solid rgba(145, 70, 255, 0.22)',
-              backdropFilter: 'blur(14px) saturate(160%)',
-              WebkitBackdropFilter: 'blur(14px) saturate(160%)',
-              boxShadow: '0 8px 40px rgba(145, 70, 255, 0.12)',
-            }}
+            className="absolute top-full mt-1 left-1/2 -translate-x-1/2 rounded-xl border py-1.5 min-w-[190px] text-center z-50"
+            style={GLASS}
           >
             <Link
               href="/"
