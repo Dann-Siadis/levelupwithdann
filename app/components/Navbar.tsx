@@ -74,8 +74,7 @@ export default function Navbar() {
           <div
             className="absolute top-full mt-1 left-1/2 -translate-x-1/2 rounded-xl py-1.5 min-w-[190px] text-center z-50"
             style={{
-              background:
-                'linear-gradient(rgba(145, 70, 255, 0.10), rgba(145, 70, 255, 0.10)), rgba(13, 15, 26, 0.88)',
+              background: 'rgba(145, 70, 255, 0.10)',
               border: '1px solid rgba(145, 70, 255, 0.22)',
               backdropFilter: 'blur(14px) saturate(160%)',
               WebkitBackdropFilter: 'blur(14px) saturate(160%)',
@@ -85,6 +84,7 @@ export default function Navbar() {
             <Link
               href="/"
               className="block px-6 py-3 text-base font-semibold text-white hover:bg-[rgba(145,70,255,0.20)] transition rounded-lg mx-1"
+              style={{ textShadow: '0 1px 4px rgba(0, 0, 0, 0.65)' }}
               onClick={() => setOpen(false)}
             >
               Home
@@ -92,6 +92,7 @@ export default function Navbar() {
             <Link
               href="/about"
               className="block px-6 py-3 text-base font-semibold text-white hover:bg-[rgba(145,70,255,0.20)] transition rounded-lg mx-1"
+              style={{ textShadow: '0 1px 4px rgba(0, 0, 0, 0.65)' }}
               onClick={() => setOpen(false)}
             >
               About Dann
