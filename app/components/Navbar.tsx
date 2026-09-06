@@ -5,6 +5,7 @@ import Image from 'next/image'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -17,8 +18,36 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 8)
+    }
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <nav className="sticky top-0 z-50 bg-[#0d0f1a]/95 backdrop-blur-md border-b border-white/5">
+    <nav
+      className="sticky top-0 z-50 border-b transition-all duration-300"
+      style={
+        scrolled
+          ? {
+              background: 'rgba(145, 70, 255, 0.10)',
+              borderColor: 'rgba(145, 70, 255, 0.22)',
+              backdropFilter: 'blur(14px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+              boxShadow: '0 4px 30px rgba(145, 70, 255, 0.12)',
+            }
+          : {
+              background: 'transparent',
+              borderColor: 'transparent',
+              backdropFilter: 'none',
+              WebkitBackdropFilter: 'none',
+              boxShadow: 'none',
+            }
+      }
+    >
       <div className="flex justify-center py-1.5 relative" ref={ref}>
         <button
           onClick={() => setOpen(!open)}
