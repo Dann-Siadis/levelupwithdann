@@ -11,6 +11,14 @@ const GLASS = {
   boxShadow: '0 4px 30px rgba(145, 70, 255, 0.12)',
 } as const
 
+const MENU = [
+  { href: '/', label: 'Home' },
+  { href: '/reviews', label: 'Game Reviews' },
+  { href: '/gear', label: 'Tech & Gear' },
+  { href: '/blogs', label: 'Gaming Blogs' },
+  { href: '/about', label: 'About Dann' },
+]
+
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -80,25 +88,20 @@ export default function Navbar() {
 
         {open && (
           <div
-            className="absolute top-full mt-1 left-1/2 -translate-x-1/2 rounded-xl border py-1.5 min-w-[190px] text-center z-50"
+            className="absolute top-full mt-1 left-1/2 -translate-x-1/2 rounded-xl border py-1.5 min-w-[210px] text-left z-50"
             style={GLASS}
           >
-            <Link
-              href="/"
-              className="block px-6 py-3 text-base font-semibold text-white hover:bg-[rgba(145,70,255,0.20)] transition rounded-lg mx-1"
-              style={{ textShadow: '0 1px 4px rgba(0, 0, 0, 0.65)' }}
-              onClick={() => setOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              href="/about"
-              className="block px-6 py-3 text-base font-semibold text-white hover:bg-[rgba(145,70,255,0.20)] transition rounded-lg mx-1"
-              style={{ textShadow: '0 1px 4px rgba(0, 0, 0, 0.65)' }}
-              onClick={() => setOpen(false)}
-            >
-              About Dann
-            </Link>
+            {MENU.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="block px-5 py-3 text-base font-semibold text-white hover:bg-[rgba(145,70,255,0.20)] transition rounded-lg mx-1"
+                style={{ textShadow: '0 1px 4px rgba(0, 0, 0, 0.65)' }}
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         )}
       </div>
