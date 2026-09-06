@@ -74,11 +74,12 @@ export default function Navbar() {
           <div
             className="absolute top-full mt-1 left-1/2 -translate-x-1/2 rounded-xl py-1.5 min-w-[190px] text-center z-50"
             style={{
-              background: 'rgba(26, 15, 48, 0.85)',
-              border: '1px solid rgba(145, 70, 255, 0.35)',
-              backdropFilter: 'blur(16px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-              boxShadow: '0 8px 40px rgba(145, 70, 255, 0.25)',
+              background:
+                'linear-gradient(rgba(145, 70, 255, 0.10), rgba(145, 70, 255, 0.10)), rgba(13, 15, 26, 0.88)',
+              border: '1px solid rgba(145, 70, 255, 0.22)',
+              backdropFilter: 'blur(14px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+              boxShadow: '0 8px 40px rgba(145, 70, 255, 0.12)',
             }}
           >
             <Link
