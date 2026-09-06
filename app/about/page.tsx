@@ -4,6 +4,7 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import ReviewCard from '@/app/components/ReviewCard'
 import AffiliateBanner from '@/app/components/AffiliateBanner'
+import { ptComponents } from '@/app/components/portableTextComponents'
 
 export const revalidate = 60
 export const metadata: Metadata = {
@@ -83,8 +84,8 @@ export default async function AboutPage() {
 
       {/* Bio */}
       {about?.bio ? (
-        <div className="prose prose-invert prose-sm max-w-none text-white/70 leading-relaxed">
-          <PortableText value={about.bio} />
+        <div className="max-w-none">
+          <PortableText value={about.bio} components={ptComponents} />
         </div>
       ) : (
         <p className="text-white/25 text-sm text-center py-10">
