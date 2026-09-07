@@ -114,7 +114,7 @@ export default function GameQuiz({
                   if (selected !== null) {
                     if (idx === selected && ans.correct)  { bg = 'rgba(34,197,94,0.15)';  border = '#22c55e'; color = '#22c55e' }
                     else if (idx === selected && !ans.correct) { bg = 'rgba(239,68,68,0.15)'; border = '#ef4444'; color = '#ef4444' }
-                    else if (ans.correct) { border = 'rgba(34,197,94,0.25)'; color = 'rgba(34,197,94,0.5)' }
+                    // deliberately no hint on the other options — the visitor figures out the right answer themselves
                   }
 
                   return (
