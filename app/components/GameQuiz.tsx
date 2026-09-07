@@ -58,7 +58,7 @@ export default function GameQuiz({
       <div style={{ perspective: '1200px' }}>
         {/* The rotatable card — sizing AND transform on the same element so preserve-3d works */}
         <div
-          className="relative aspect-[4/5] md:aspect-auto md:h-[320px] max-w-xs mx-auto md:max-w-none"
+          className="relative aspect-square md:aspect-auto md:h-[320px] w-full"
           style={{
             transformStyle: 'preserve-3d',
             transition: 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
