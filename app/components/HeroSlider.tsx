@@ -101,9 +101,6 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
                     className="inline-flex items-center gap-1.5 bg-[#e53935] hover:bg-[#c62828] text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow-lg whitespace-nowrap"
                   >
                     {slide.ctaText}
-                    <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M2 6h8M6 2l4 4-4 4" />
-                    </svg>
                   </Link>
                 )}
               </div>
