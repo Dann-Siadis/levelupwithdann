@@ -38,18 +38,17 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
       <ProductGallery images={galleryImages} alt={product.title} />
 
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <div>
-          <h1 className="text-xl font-extrabold text-white leading-snug">{product.title}</h1>
-          {product.subtitle && <p className="text-sm text-white/40 mt-1">{product.subtitle}</p>}
-        </div>
-        {product.price && (
-          <span className="shrink-0 text-base font-bold text-[#e53935]">{product.price}</span>
-        )}
+      <div className="mb-2">
+        <h1 className="text-xl font-extrabold text-white leading-snug">{product.title}</h1>
+        {product.subtitle && <p className="text-sm text-white/40 mt-1">{product.subtitle}</p>}
       </div>
 
       {product.description && (
         <p className="text-white/60 text-sm leading-relaxed mb-8 mt-4">{product.description}</p>
+      )}
+
+      {product.price && (
+        <p className="text-2xl font-bold text-[#e53935] mb-3">{product.price}</p>
       )}
 
       {product.affiliateLink && (
