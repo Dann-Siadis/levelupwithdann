@@ -6,6 +6,7 @@ const CATEGORY_OPTIONS = [
   { title: 'Gaming Blogs', value: 'gaming' },
   { title: 'Movie & TV Reviews', value: 'tvshows' },
   { title: 'Kickboxing', value: 'kickboxing' },
+  { title: "Shop (productpagina's)", value: 'shop' },
 ]
 
 export default defineType({

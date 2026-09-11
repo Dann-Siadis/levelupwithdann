@@ -25,6 +25,13 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: 'gallery',
+      type: 'array',
+      title: 'Gallery',
+      description: 'Extra productfoto\'s, worden samen met de hoofdfoto getoond op de detailpagina',
+      of: [{ type: 'image', options: { hotspot: true } }],
+    }),
+    defineField({
       name: 'subtitle',
       type: 'string',
       title: 'Subtitle',

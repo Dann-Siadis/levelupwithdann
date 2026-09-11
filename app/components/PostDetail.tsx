@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
-import { client } from '@/lib/sanity'
+import { client, bannerQuery } from '@/lib/sanity'
 import AffiliateBanner from './AffiliateBanner'
 import ShopBanner from './ShopBanner'
 import ReviewCard from './ReviewCard'
@@ -53,12 +53,6 @@ export default async function PostDetail({
   publishedAt, affiliateLink, recommendedPosts, backHref, backLabel, category,
 }: PostDetailProps) {
   // Fetch the most specific matching banner: category-specific first, general fallback second
-  const bannerQuery = (type: string, projection: string) => `
-    *[_type == "${type}" && active == true && (
-      ($cat != "" && $cat in categories) ||
-      (!defined(categories) || count(categories) == 0)
-    )] | order(count(categories) desc)[0]{ ${projection} }
-  `
   const cat = category ?? ''
 
   const [affiliateBannerData, shopBannerData] = await Promise.all([
@@ -111,9 +105,6 @@ export default async function PostDetail({
           className="flex items-center justify-center gap-2 w-full bg-[#e53935] hover:bg-[#c62828] text-white text-sm font-bold py-3 rounded-xl transition shadow-lg mb-8"
         >
           Buy now
-          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M2 7h10M8 3l4 4-4 4" />
-          </svg>
         </a>
       )}
 
