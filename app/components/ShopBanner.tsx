@@ -51,9 +51,6 @@ function BannerCard({ imageUrl, heading, subtext, ctaText, ctaLink }: {
             className="self-start inline-flex items-center gap-1 bg-[#e53935] hover:bg-[#c62828] text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow whitespace-nowrap mt-0.5"
           >
             {ctaText}
-            <svg width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M2 5h6M5 2l3 3-3 3" />
-            </svg>
           </Link>
         )}
       </div>
