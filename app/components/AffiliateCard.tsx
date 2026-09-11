@@ -40,15 +40,8 @@ export default function AffiliateCard({ title, href, imageUrl, className }: Affi
       </div>
 
       {/* Info 25% */}
-      <div className="px-3 py-2 pr-8 flex-1 min-w-0">
+      <div className="px-3 py-2 flex-1 min-w-0">
         <p className="text-xs font-semibold text-white leading-tight line-clamp-2">{title}</p>
-      </div>
-
-      {/* Corner arrow — same inset as the score badge */}
-      <div className="absolute bottom-2 right-2 text-white/80 group-hover:text-white transition">
-        <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M2 6h8M7 3l3 3-3 3" />
-        </svg>
       </div>
     </Link>
   )
