@@ -24,7 +24,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
             letterSpacing: '0.02em',
           }}
         >
-          Some pages are still in the works.
+          Some pages are still in the works. [DEBUG pathname="{pathname}"]
         </div>
       )}
       <Navbar />
