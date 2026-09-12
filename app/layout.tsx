@@ -12,6 +12,9 @@ const geist = Geist({
 export const metadata: Metadata = {
   title: 'LevelUpWithDann — Gaming Reviews, Gear & More',
   description: 'Honest game reviews, the best gear picks, gaming blogs and kickboxing content from Dann.',
+  verification: {
+    google: '0WJMxDAgu8nUKTkGSmkxvb7i8TV-FjVHXZZh4QUcuLA',
+  },
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
