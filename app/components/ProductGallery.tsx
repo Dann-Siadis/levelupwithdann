@@ -15,7 +15,7 @@ export default function ProductGallery({ images, alt }: { images: string[]; alt:
     <div className="mb-6">
       <div
         className="relative w-full rounded-2xl overflow-hidden bg-white/5"
-        style={{ height: 'clamp(180px, 40vw, 340px)' }}
+        style={{ aspectRatio: '1 / 1' }}
         onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
         onTouchEnd={e => {
           const diff = touchStartX.current - e.changedTouches[0].clientX
