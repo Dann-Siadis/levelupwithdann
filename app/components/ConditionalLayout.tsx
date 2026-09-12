@@ -6,7 +6,9 @@ import Footer from './Footer'
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isStudio = pathname?.startsWith('/studio')
-  const isHome = pathname === '/'
+  // This build reports the homepage's pathname as "/index" rather than "/"
+  // (a static-export quirk), so both need to be treated as home.
+  const isHome = pathname === '/' || pathname === '/index'
 
   if (isStudio) return <>{children}</>
 
@@ -24,7 +26,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
             letterSpacing: '0.02em',
           }}
         >
-          Some pages are still in the works. [DEBUG pathname="{pathname}"]
+          Some pages are still in the works.
         </div>
       )}
       <Navbar />
