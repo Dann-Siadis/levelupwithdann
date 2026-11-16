@@ -51,7 +51,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
   if (!slides.length) return null
 
   return (
-    <div className="h-[210px] md:h-[460px] lg:h-[520px]">
+    <div className="h-[260px] md:h-[540px] lg:h-[620px]">
       {/* Slides */}
       <div
         className="relative w-full h-full overflow-hidden"
