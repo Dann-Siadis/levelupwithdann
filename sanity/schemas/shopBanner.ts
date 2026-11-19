@@ -51,6 +51,18 @@ export default defineType({
     defineField({ name: 'subtext2', type: 'string', title: 'Banner 2 — Subtext' }),
     defineField({ name: 'ctaText2', type: 'string', title: 'Banner 2 — Button tekst' }),
     defineField({ name: 'ctaLink2', type: 'string', title: 'Banner 2 — Button link' }),
+
+    defineField({
+      name: 'image3',
+      type: 'image',
+      title: 'Banner 3 — Afbeelding (links) — optioneel',
+      description: 'Vul dit in voor een derde banner (op desktop drie naast elkaar, op mobiel onder elkaar).',
+      options: { hotspot: true },
+    }),
+    defineField({ name: 'heading3', type: 'string', title: 'Banner 3 — Heading' }),
+    defineField({ name: 'subtext3', type: 'string', title: 'Banner 3 — Subtext' }),
+    defineField({ name: 'ctaText3', type: 'string', title: 'Banner 3 — Button tekst' }),
+    defineField({ name: 'ctaLink3', type: 'string', title: 'Banner 3 — Button link' }),
   ],
   preview: {
     select: { title: 'heading', categories: 'categories', media: 'image', active: 'active' },

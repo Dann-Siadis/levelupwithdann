@@ -14,6 +14,11 @@ interface ShopBannerProps {
   subtext2?: string
   ctaText2?: string
   ctaLink2?: string
+  imageUrl3?: string
+  heading3?: string
+  subtext3?: string
+  ctaText3?: string
+  ctaLink3?: string
 }
 
 function BannerCard({ imageUrl, heading, subtext, ctaText, ctaLink }: {
@@ -61,6 +66,7 @@ function BannerCard({ imageUrl, heading, subtext, ctaText, ctaLink }: {
 export default function ShopBanner({
   imageUrl, heading, subtext, ctaText, ctaLink,
   imageUrl2, heading2, subtext2, ctaText2, ctaLink2,
+  imageUrl3, heading3, subtext3, ctaText3, ctaLink3,
 }: ShopBannerProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
@@ -77,12 +83,19 @@ export default function ShopBanner({
   }, [])
 
   const hasBanner2 = !!(heading2 || imageUrl2)
+  const hasBanner3 = !!(heading3 || imageUrl3)
+  const aantal = 1 + (hasBanner2 ? 1 : 0) + (hasBanner3 ? 1 : 0)
+  const layout = aantal === 1
+    ? 'flex'
+    : aantal === 2
+      ? 'grid grid-cols-1 md:grid-cols-2 gap-3'
+      : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'
 
   return (
     <div className="px-5">
       <div
         ref={ref}
-        className={`opacity-0 ${visible ? 'animate-bounce-in' : ''} ${hasBanner2 ? 'grid grid-cols-1 md:grid-cols-2 gap-3' : 'flex'}`}
+        className={`opacity-0 ${visible ? 'animate-bounce-in' : ''} ${layout}`}
       >
         <BannerCard
           imageUrl={imageUrl}
@@ -98,6 +111,15 @@ export default function ShopBanner({
             subtext={subtext2}
             ctaText={ctaText2}
             ctaLink={ctaLink2}
+          />
+        )}
+        {hasBanner3 && (
+          <BannerCard
+            imageUrl={imageUrl3}
+            heading={heading3}
+            subtext={subtext3}
+            ctaText={ctaText3}
+            ctaLink={ctaLink3}
           />
         )}
       </div>

@@ -56,7 +56,8 @@ export default async function Home() {
     }`).catch(() => null),
     client.fetch(`*[_type == "shopBanner" && active == true][0]{
       "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink,
-      "imageUrl2": image2.asset->url, heading2, subtext2, ctaText2, ctaLink2
+      "imageUrl2": image2.asset->url, heading2, subtext2, ctaText2, ctaLink2,
+      "imageUrl3": image3.asset->url, heading3, subtext3, ctaText3, ctaLink3
     }`).catch(() => null),
     // Affiliate-kaarten per homepage-rij (categorie leeg = Game Reviews).
     client.fetch(`*[_type == "gameAffiliateCard" && active == true] | order(_updatedAt desc){
@@ -218,6 +219,11 @@ export default async function Home() {
             subtext2={shopBannerData.subtext2}
             ctaText2={shopBannerData.ctaText2}
             ctaLink2={shopBannerData.ctaLink2}
+            imageUrl3={shopBannerData.imageUrl3}
+            heading3={shopBannerData.heading3}
+            subtext3={shopBannerData.subtext3}
+            ctaText3={shopBannerData.ctaText3}
+            ctaLink3={shopBannerData.ctaLink3}
           />
         )}
       </div>
