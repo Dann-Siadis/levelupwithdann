@@ -27,7 +27,7 @@ const SECTIONS = [
 ]
 
 export default async function Home() {
-  const [hero, homepage, banner, shopBannerData, gameAffiliate, quizData] = await Promise.all([
+  const [hero, homepage, banner, shopBannerData, affiliateKaarten, quizData] = await Promise.all([
     client.fetch(`*[_type == "heroSettings"][0]{
       slides[]{ "imageUrl": image.asset->url, textLines, ctaText, ctaLink }
     }`).catch(() => null),
@@ -58,8 +58,9 @@ export default async function Home() {
       "imageUrl": image.asset->url, heading, subtext, ctaText, ctaLink,
       "imageUrl2": image2.asset->url, heading2, subtext2, ctaText2, ctaLink2
     }`).catch(() => null),
-    client.fetch(`*[_type == "gameAffiliateCard" && active == true][0]{
-      title, affiliateLink, "imageUrl": image.asset->url
+    // Affiliate-kaarten per homepage-rij (categorie leeg = Game Reviews).
+    client.fetch(`*[_type == "gameAffiliateCard" && active == true] | order(_updatedAt desc){
+      title, affiliateLink, "imageUrl": image.asset->url, category, positie
     }`).catch(() => null),
     client.fetch(`*[_type == "gameQuiz" && active == true][0]{
       title, subtitle,
@@ -129,19 +130,29 @@ export default async function Home() {
               <div className="pl-5">
                 {cards.length > 0 ? (
                   <SwipeCarousel>
-                    {cards.map((card, i) => (
-                      <>
-                        <ReviewCard key={i} {...card} />
-                        {section.key === 'games' && i === 3 && gameAffiliate && (
-                          <AffiliateCard
-                            key="affiliate"
-                            title={gameAffiliate.title}
-                            href={gameAffiliate.affiliateLink}
-                            imageUrl={gameAffiliate.imageUrl}
-                          />
-                        )}
-                      </>
-                    ))}
+                    {(() => {
+                      // Affiliate-kaart van deze rij: na `positie` kaarten (leeg = 4),
+                      // 0 = vooraan, groter dan de rij = achteraan (vóór "See all").
+                      const kaart = (affiliateKaarten ?? []).find(
+                        (k: { category?: string }) => (k.category || 'games') === section.key
+                      )
+                      const na = kaart ? Math.min(Math.max(kaart.positie ?? 4, 0), cards.length) : -1
+                      const affiliate = kaart ? (
+                        <AffiliateCard
+                          key="affiliate"
+                          title={kaart.title}
+                          href={kaart.affiliateLink}
+                          imageUrl={kaart.imageUrl}
+                        />
+                      ) : null
+                      const items = []
+                      if (na === 0) items.push(affiliate)
+                      cards.forEach((card, i) => {
+                        items.push(<ReviewCard key={i} {...card} />)
+                        if (na === i + 1) items.push(affiliate)
+                      })
+                      return items
+                    })()}
                     <SeeAllCard href={section.href} total={total} label={`See all ${section.label}`} />
                     <div className="shrink-0 w-3" />
                   </SwipeCarousel>

@@ -84,9 +84,9 @@ export default defineType({
     }),
     defineField({
       name: 'slides',
-      title: 'Slides (max 2)',
+      title: 'Slides (max 3)',
       type: 'array',
-      validation: Rule => Rule.max(2),
+      validation: Rule => Rule.max(3),
       of: [
         {
           type: 'object',
