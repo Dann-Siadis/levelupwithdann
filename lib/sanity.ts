@@ -16,11 +16,13 @@ export const urlFor = (source: any) => builder.image(source)
 // `cat` in its `categories` wins over the untagged fallback banner, and an
 // untagged, category-less doc never matches a non-empty `cat` it wasn't
 // tagged for, so category-scoped banners stay confined to their pages.
+// Specifieke banner (met categorie) gaat vóór de algemene. Zonder coalesce telt
+// een banner zónder categorieën als null en die sorteert bij desc bovenaan.
 export function bannerQuery(type: string, projection: string) {
   return `
     *[_type == "${type}" && active == true && (
       ($cat != "" && $cat in categories) ||
       (!defined(categories) || count(categories) == 0)
-    )] | order(count(categories) desc)[0]{ ${projection} }
+    )] | order(coalesce(count(categories), 0) desc)[0]{ ${projection} }
   `
 }
